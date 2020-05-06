@@ -1,0 +1,15 @@
+.selected {
+	text-decoration: underline;
+	font-weight: bold;
+	color: green;
+}
+
+.main-header {
+	border-bottom: 2px solid black;
+	min-height: 80px;
+}
+
+.error {
+	color: red;
+	font-weight: bold;
+}
