@@ -9,6 +9,7 @@ export default class UploadProductForm extends Component {
 		super(props);
 		this.fileInput = React.createRef();
 		this.state = {
+			product: {},
 			errors: [],
 			missingFields: [],
 		};
@@ -19,11 +20,11 @@ export default class UploadProductForm extends Component {
 		for (let i = 0; i < this.fileInput.current.files.length; i++) {
 			formData.append('images', this.fileInput.current.files[i]);
 		}
-		formData.append('sku', document.querySelector('.sku').value);
-		formData.append('name', document.querySelector('.name').value);
-		formData.append('price', document.querySelector('.price').value);
-		formData.append('desc', document.querySelector('.desc').value);
-		formData.append('spec', document.querySelector('.specs').value);
+		formData.append('sku', this.state.product.sku);
+		formData.append('name', this.state.product.name);
+		formData.append('price', this.state.product.price);
+		formData.append('desc', this.state.product.desc);
+		formData.append('spec', this.state.product.spec);
 		const result = await fetch('http://localhost:5000/product', {
 			method: 'POST',
 			mode: 'cors',
@@ -158,6 +159,16 @@ export default class UploadProductForm extends Component {
 		}
 	};
 
+	handleChange = (evt) => {
+		this.setState({
+			...this.state,
+			product: {
+				...this.state.product,
+				[evt.target.name]: evt.target.value,
+			},
+		});
+	};
+
 	render() {
 		return (
 			<Container className="p-3">
@@ -194,6 +205,7 @@ export default class UploadProductForm extends Component {
 									? this.props.productData.name
 									: ''
 							}
+							onChange={this.handleChange}
 							required
 						/>
 					</Form.Group>
@@ -208,6 +220,7 @@ export default class UploadProductForm extends Component {
 									? this.props.productData.price
 									: ''
 							}
+							onChange={this.handleChange}
 							required
 						/>
 					</Form.Group>
@@ -223,6 +236,7 @@ export default class UploadProductForm extends Component {
 									? this.props.productData.desc
 									: ''
 							}
+							onChange={this.handleChange}
 						/>
 					</Form.Group>
 					<Form.Group>
@@ -239,6 +253,7 @@ export default class UploadProductForm extends Component {
 									? this.props.productData.specs
 									: ''
 							}
+							onChange={this.handleChange}
 						/>
 					</Form.Group>
 					<Form.Group>
