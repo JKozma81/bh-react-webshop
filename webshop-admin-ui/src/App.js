@@ -3,9 +3,10 @@ import './App.css';
 import Header from './components/Header/Header';
 import Dashboard from './components/Dashboard/Dashboard';
 import Products from './components/Products/Products';
-// import ProductUpload from './ProductUpload';
+import UploadProductForm from './components/UploadProductForm/UploadProductForm';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
+
 // import ProductEdit from './ProductEdit';
 
 class App extends Component {
@@ -19,8 +20,8 @@ class App extends Component {
 							<Route path="/products">
 								<Products />
 							</Route>
-							<Route path="/products-upload">
-								{/* <ProductUpload /> */}
+							<Route path="/upload-product">
+								<UploadProductForm productData={{}} />
 							</Route>
 							{/* <Route
 								path="/product/:sku"

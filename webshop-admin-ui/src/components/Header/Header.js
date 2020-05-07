@@ -27,9 +27,9 @@ export default class Header extends Component {
 					<NavLink
 						className="nav-link"
 						activeClassName="selected"
-						to="/products-upload"
+						to="/upload-product"
 					>
-						Termék feltöltés
+						Product Upload
 					</NavLink>
 					{/* --- */}
 				</Navbar.Collapse>
