@@ -66,46 +66,36 @@ class ProductRepository {
 		});
 	}
 
-	// getAllProducts() {
-	// 	return new Promise((resolve, reject) => {
-	// 		try {
-	// 			this.dataBase.serialize(() => {
-	// 				this.dataBase.all(
-	// 					'SELECT sku, name, price, desc, specs FROM products',
-	// 					(err, results) => {
-	// 						if (err !== null) reject(err);
-	// 						this.dataBase.all(
-	// 							'SELECT id, url, product_sku, is_primary FROM images',
-	// 							(err, picResuts) => {
-	// 								if (err !== null) reject(err);
-	// 								const resultProductData = [];
-	// 								for (const result of results) {
-	// 									const tempProduct = new Product(
-	// 										result.sku,
-	// 										result.name,
-	// 										result.price,
-	// 										result.desc,
-	// 										result.specs
-	// 									);
-	// 									tempProduct.images = picResuts.filter(
-	// 										(picture) =>
-	// 											picture.product_sku ===
-	// 											tempProduct.sku
-	// 									);
-	// 									resultProductData.push(tempProduct);
-	// 								}
-	// 								resolve(resultProductData);
-	// 							}
-	// 						);
-	// 					}
-	// 				);
-	// 			});
-	// 		} catch (err) {
-	// 			console.error(err);
-	// 			reject(err);
-	// 		}
-	// 	});
-	// }
+	getAllProducts() {
+		return new Promise((resolve, reject) => {
+			try {
+				this.dataBase.serialize(() => {
+					this.dataBase.all(
+						'SELECT sku, name, price, desc, specs FROM products',
+						(err, results) => {
+							if (err !== null) reject(err);
+
+							const resultProductData = [];
+							for (const result of results) {
+								const tempProduct = new Product(
+									result.sku,
+									result.name,
+									result.price,
+									result.desc,
+									result.specs
+								);
+								resultProductData.push(tempProduct);
+							}
+							resolve(resultProductData);
+						}
+					);
+				});
+			} catch (err) {
+				console.error(err);
+				reject(err);
+			}
+		});
+	}
 
 	// getProduct(sku) {
 	// 	return new Promise((resolve, reject) => {

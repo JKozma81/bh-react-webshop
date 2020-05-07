@@ -6,10 +6,18 @@ import Products from './components/Products/Products';
 import UploadProductForm from './components/UploadProductForm/UploadProductForm';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
+import { connect } from 'react-redux';
+import { getProductsAndImages } from './actions/Actions';
 
 // import ProductEdit from './ProductEdit';
 
 class App extends Component {
+	async componentDidMount() {
+		const dataStream = await fetch('http://localhost:5000/products');
+		const dataFromDb = await dataStream.json();
+		const { imageData, productsData } = dataFromDb;
+		this.props.getItems(productsData, imageData);
+	}
 	render() {
 		return (
 			<div className="App">
@@ -40,4 +48,11 @@ class App extends Component {
 	}
 }
 
-export default App;
+function mapDispatchToProps(dispatch) {
+	return {
+		getItems: (productsData, imagesData) =>
+			dispatch(getProductsAndImages(productsData, imagesData)),
+	};
+}
+
+export default connect(null, mapDispatchToProps)(App);

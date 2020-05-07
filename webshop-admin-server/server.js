@@ -56,12 +56,13 @@ app.post(
 //   })
 // );
 
-// app.get(
-//   '/products',
-//   ProductController.getProducts({
-//     productService,
-//   })
-// );
+app.get(
+	'/products',
+	ProductController.getProductsAndImages({
+		productService,
+		imageService,
+	})
+);
 
 // app.put(
 //   '/products/:sku',

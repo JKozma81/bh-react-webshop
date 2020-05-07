@@ -1,4 +1,6 @@
 const initialState = {
+	products: [],
+	images: [],
 	errors: [],
 	missingFields: [],
 	productData: {},

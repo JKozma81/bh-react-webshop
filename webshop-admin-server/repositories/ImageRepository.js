@@ -42,6 +42,25 @@ class ImageRepository {
 			}
 		});
 	}
+
+	getAllImages() {
+		return new Promise((resolve, reject) => {
+			try {
+				this.dataBase.serialize(() => {
+					this.dataBase.all(
+						'SELECT id, url, product_sku, is_primary FROM images',
+						(err, imageResults) => {
+							if (err !== null) reject(err);
+							resolve(imageResults);
+						}
+					);
+				});
+			} catch (err) {
+				console.error(err);
+				reject(err);
+			}
+		});
+	}
 }
 
 module.exports = ImageRepository;

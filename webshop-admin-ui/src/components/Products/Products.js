@@ -2,32 +2,37 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
+import { connect } from 'react-redux';
 
-export default class Products extends Component {
-	state = {
-		products: [],
-	};
-
-	async componentDidMount() {
-		const dataStream = await fetch('http://localhost:5000/products');
-		const productsData = await dataStream.json();
-		this.setState({ products: productsData });
-	}
-
+class Products extends Component {
 	render() {
+		let products;
+		if (this.props.products.length > 0 && this.props.images.length > 0) {
+			products = this.props.products.map((product) => {
+				return {
+					...product,
+					picture: this.props.images.find(
+						(image) =>
+							image.product_sku === product.sku &&
+							image.is_primary === 1
+					).url,
+				};
+			});
+		}
+
 		return (
 			<Container className="text-center">
 				<h1>Products</h1>
 
-				{!this.state.products.length ? (
-					<>
+				{!this.props.products.length ? (
+					<Container className="d-flex flex-column justify-content-center align-items-center">
 						<p>You have not added any products</p>
 						<br />
 						<p>
 							Click <Link to="/products-upload">here</Link> add
 							one
 						</p>
-					</>
+					</Container>
 				) : (
 					<Table bordered hover size="sm" className="text-center">
 						<thead>
@@ -40,25 +45,20 @@ export default class Products extends Component {
 							</tr>
 						</thead>
 						<tbody>
-							{this.state.products.map((product, idx) => {
+							{products.map((product, idx) => {
 								return (
 									<tr key={`cell_${idx}`}>
-										<td key={`cell_${idx + 5}`}>
+										<td>
 											<img
 												src={product.picture}
 												alt="something"
+												style={{ width: '150px' }}
 											/>
 										</td>
-										<td key={`cell_${idx + 1}`}>
-											{product.sku}
-										</td>
-										<td key={`cell_${idx + 2}`}>
-											{product.name}
-										</td>
-										<td key={`cell_${idx + 3}`}>
-											{product.price}
-										</td>
-										<td key={`cell_${idx + 4}`}>
+										<td>{product.sku}</td>
+										<td>{product.name}</td>
+										<td>{product.price}</td>
+										<td>
 											<Link
 												to={`/product/${product.sku}`}
 												className="btn btn-primary"
@@ -76,3 +76,12 @@ export default class Products extends Component {
 		);
 	}
 }
+
+function mapStateToProps(state) {
+	return {
+		products: state.products,
+		images: state.images,
+	};
+}
+
+export default connect(mapStateToProps)(Products);

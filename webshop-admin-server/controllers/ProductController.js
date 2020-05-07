@@ -235,19 +235,22 @@ class ProductController {
 		};
 	}
 
-	// static getProducts(options) {
-	// 	const productService = options.productService;
+	static getProductsAndImages(options) {
+		const productService = options.productService;
+		const imageService = options.imageService;
 
-	// 	return async (req, res) => {
-	// 		try {
-	// 			const products = await productService.getAllProducts();
-	// 			res.json(products);
-	// 		} catch (err) {
-	// 			console.error(err.toString());
-	// 			res.json(err);
-	// 		}
-	// 	};
-	// }
+		return async (req, res) => {
+			try {
+				const productsData = await productService.getAllProducts();
+				const imageData = await imageService.getAllImages();
+
+				res.json({ productsData, imageData });
+			} catch (err) {
+				console.error(err.toString());
+				res.json(err);
+			}
+		};
+	}
 
 	// static getProductBySKU(options) {
 	// 	const productService = options.productService;
