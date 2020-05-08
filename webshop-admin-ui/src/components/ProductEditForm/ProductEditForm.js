@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 import { Form, Container, Button } from 'react-bootstrap';
 
-export default class UploadProductForm extends Component {
+export default class ProductEditForm extends Component {
   constructor(props) {
     super(props);
-    this.fileInput = React.createRef();
     this.state = {
       product: {},
       errors: [],
@@ -23,28 +22,28 @@ export default class UploadProductForm extends Component {
     formData.append('price', this.state.product.price);
     formData.append('desc', this.state.product.desc);
     formData.append('spec', this.state.product.spec);
-    const result = await fetch('http://localhost:5000/product', {
-      method: 'POST',
-      mode: 'cors',
-      body: formData,
-    });
+    // const result = await fetch('http://localhost:5000/product', {
+    //   method: 'POST',
+    //   mode: 'cors',
+    //   body: formData,
+    // });
 
-    if (result.ok) {
-      const results = await result.json();
-      this.setState({
-        ...this.state,
-        product: {},
-        errors: [],
-        missingFields: [],
-      });
-    } else {
-      const results = await result.json();
-      this.setState({
-        ...this.state,
-        errors: [...this.state.errors, ...results.errors],
-        product: { ...this.state.product, ...results.productData },
-      });
-    }
+    // if (result.ok) {
+    //   const results = await result.json();
+    //   this.setState({
+    //     ...this.state,
+    //     product: {},
+    //     errors: [],
+    //     missingFields: [],
+    //   });
+    // } else {
+    //   const results = await result.json();
+    //   this.setState({
+    //     ...this.state,
+    //     errors: [...this.state.errors, ...results.errors],
+    //     product: { ...this.state.product, ...results.productData },
+    //   });
+    // }
   };
 
   validate = (e) => {
@@ -101,7 +100,7 @@ export default class UploadProductForm extends Component {
     return (
       <Container className="p-3">
         <Form
-          className="Upload-form"
+          className="edit-form"
           onSubmit={this.validate}
           encType="multipart/form-data"
         >
@@ -113,9 +112,9 @@ export default class UploadProductForm extends Component {
               name="sku"
               onKeyPress={this.handleSKUInput}
               maxLength="12"
-              defaultValue={
-                this.props.productData.sku ? this.props.productData.sku : ''
-              }
+              // defaultValue={
+              //   this.props.productData.sku ? this.props.productData.sku : ''
+              // }
             />
           </Form.Group>
           <Form.Group>
@@ -124,9 +123,9 @@ export default class UploadProductForm extends Component {
               className="name"
               type="text"
               name="name"
-              defaultValue={
-                this.props.productData.name ? this.props.productData.name : ''
-              }
+              // defaultValue={
+              //   this.props.productData.name ? this.props.productData.name : ''
+              // }
               onChange={this.handleChange}
               required
             />
@@ -137,9 +136,9 @@ export default class UploadProductForm extends Component {
               className="price"
               type="number"
               name="price"
-              defaultValue={
-                this.props.productData.price ? this.props.productData.price : ''
-              }
+              // defaultValue={
+              //   this.props.productData.price ? this.props.productData.price : ''
+              // }
               onChange={this.handleChange}
               required
             />
@@ -151,9 +150,9 @@ export default class UploadProductForm extends Component {
               as="textarea"
               name="desc"
               maxLength="240"
-              defaultValue={
-                this.props.productData.desc ? this.props.productData.desc : ''
-              }
+              // defaultValue={
+              //   this.props.productData.desc ? this.props.productData.desc : ''
+              // }
               onChange={this.handleChange}
             />
           </Form.Group>
@@ -166,20 +165,10 @@ export default class UploadProductForm extends Component {
               name="spec"
               required
               onKeyPress={this.handleSpecsInput}
-              defaultValue={
-                this.props.productData.specs ? this.props.productData.specs : ''
-              }
+              // defaultValue={
+              //   this.props.productData.specs ? this.props.productData.specs : ''
+              // }
               onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.File
-              id="custom-file"
-              label="Images"
-              multiple
-              custom
-              name="images"
-              ref={this.fileInput}
             />
           </Form.Group>
           <Form.Group className="text-right">
