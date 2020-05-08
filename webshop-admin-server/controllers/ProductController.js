@@ -243,22 +243,22 @@ class ProductController {
     };
   }
 
-  // static getProductBySKU(options) {
-  // 	const productService = options.productService;
+  static getProductBySKU(options) {
+    const productService = options.productService;
+    const imageService = options.imageService;
 
-  // 	return async (req, res) => {
-  // 		try {
-  // 			const prodSku = req.params.sku;
-  // 			const currentData = await productService.getProductBySku(
-  // 				prodSku
-  // 			);
-  // 			res.json(currentData);
-  // 		} catch (err) {
-  // 			console.error(err.toString());
-  // 			res.json(err);
-  // 		}
-  // 	};
-  // }
+    return async (req, res) => {
+      try {
+        const prodSku = req.params.sku;
+        const productData = await productService.getProductBySku(prodSku);
+        const imageData = await imageService.getImagesBySKU(prodSku);
+        // res.json(currentData);
+      } catch (err) {
+        console.error(err.toString());
+        res.json(err);
+      }
+    };
+  }
 
   // static modifyProduct(options) {
   // 	const productService = options.productService;

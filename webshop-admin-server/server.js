@@ -27,20 +27,21 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(cors());
 
 app.post(
-	'/product',
-	ProductController.addProduct({
-		productService,
-		skuService,
-		imageService,
-	})
+  '/product',
+  ProductController.addProduct({
+    productService,
+    skuService,
+    imageService,
+  })
 );
 
-// app.get(
-//   '/products/:sku/files',
-//   ProductController.getProductBySKU({
-//     productService,
-//   })
-// );
+app.get(
+  '/products/:sku/files',
+  ProductController.getProductBySKU({
+    productService,
+    imageService,
+  })
+);
 
 // app.get(
 //   '/products/:sku/pictures',
@@ -57,11 +58,11 @@ app.post(
 // );
 
 app.get(
-	'/products',
-	ProductController.getProductsAndImages({
-		productService,
-		imageService,
-	})
+  '/products',
+  ProductController.getProductsAndImages({
+    productService,
+    imageService,
+  })
 );
 
 // app.put(
@@ -86,5 +87,5 @@ app.get(
 // );
 
 app.listen(port, () =>
-	console.log(`App is started and listening at http://localhost:${port}`)
+  console.log(`App is started and listening at http://localhost:${port}`)
 );
