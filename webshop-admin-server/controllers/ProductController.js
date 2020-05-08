@@ -252,7 +252,7 @@ class ProductController {
         const prodSku = req.params.sku;
         const productData = await productService.getProductBySku(prodSku);
         const imageData = await imageService.getImagesBySKU(prodSku);
-        // res.json(currentData);
+        res.json({ productData, imageData });
       } catch (err) {
         console.error(err.toString());
         res.json(err);
