@@ -112,7 +112,7 @@ class ImageRepository {
     return new Promise((resolve, reject) => {
       try {
         this.dataBase.serialize(() => {
-          this.dataBase.get(
+          this.dataBase.all(
             'SELECT id, url, product_sku, is_primary FROM images WHERE product_sku = ?',
             prodSku,
             (err, imageResult) => {

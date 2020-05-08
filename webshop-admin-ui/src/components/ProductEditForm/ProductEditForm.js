@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
 import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 import { Form, Container, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-export default class ProductEditForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      product: {},
-      errors: [],
-      missingFields: [],
-    };
-  }
+class ProductEditForm extends Component {
+  state = {
+    product: {},
+    errors: [],
+    missingFields: [],
+  };
 
-  uploadData = async () => {
+  componentDidMount() {}
+
+  updateData = async () => {
     const formData = new FormData();
-    for (let i = 0; i < this.fileInput.current.files.length; i++) {
-      formData.append('images', this.fileInput.current.files[i]);
-    }
     formData.append('sku', this.state.product.sku);
     formData.append('name', this.state.product.name);
     formData.append('price', this.state.product.price);
@@ -112,9 +109,8 @@ export default class ProductEditForm extends Component {
               name="sku"
               onKeyPress={this.handleSKUInput}
               maxLength="12"
-              // defaultValue={
-              //   this.props.productData.sku ? this.props.productData.sku : ''
-              // }
+              defaultValue={this.props.product.sku}
+              onChange={this.handleChange}
             />
           </Form.Group>
           <Form.Group>
@@ -123,9 +119,7 @@ export default class ProductEditForm extends Component {
               className="name"
               type="text"
               name="name"
-              // defaultValue={
-              //   this.props.productData.name ? this.props.productData.name : ''
-              // }
+              defaultValue={this.props.product.name}
               onChange={this.handleChange}
               required
             />
@@ -136,9 +130,7 @@ export default class ProductEditForm extends Component {
               className="price"
               type="number"
               name="price"
-              // defaultValue={
-              //   this.props.productData.price ? this.props.productData.price : ''
-              // }
+              defaultValue={this.props.product.price}
               onChange={this.handleChange}
               required
             />
@@ -150,9 +142,7 @@ export default class ProductEditForm extends Component {
               as="textarea"
               name="desc"
               maxLength="240"
-              // defaultValue={
-              //   this.props.productData.desc ? this.props.productData.desc : ''
-              // }
+              defaultValue={this.props.product.desc}
               onChange={this.handleChange}
             />
           </Form.Group>
@@ -165,9 +155,7 @@ export default class ProductEditForm extends Component {
               name="spec"
               required
               onKeyPress={this.handleSpecsInput}
-              // defaultValue={
-              //   this.props.productData.specs ? this.props.productData.specs : ''
-              // }
+              defaultValue={this.props.product.specs}
               onChange={this.handleChange}
             />
           </Form.Group>
@@ -185,3 +173,15 @@ export default class ProductEditForm extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    product: state.singleProductData,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(mapStateToProps)(ProductEditForm);

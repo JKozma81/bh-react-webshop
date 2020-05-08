@@ -30,7 +30,6 @@ export default class UploadProductForm extends Component {
     });
 
     if (result.ok) {
-      const results = await result.json();
       this.setState({
         ...this.state,
         product: {},
@@ -116,6 +115,7 @@ export default class UploadProductForm extends Component {
               defaultValue={
                 this.props.productData.sku ? this.props.productData.sku : ''
               }
+              onChange={this.handleChange}
             />
           </Form.Group>
           <Form.Group>

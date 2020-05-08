@@ -40,6 +40,7 @@ app.get(
   ProductController.getProductBySKU({
     productService,
     imageService,
+    skuService,
   })
 );
 

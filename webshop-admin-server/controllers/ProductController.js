@@ -246,10 +246,21 @@ class ProductController {
   static getProductBySKU(options) {
     const productService = options.productService;
     const imageService = options.imageService;
+    const skuService = options.skuService;
 
     return async (req, res) => {
       try {
         const prodSku = req.params.sku;
+
+        const skuExists = skuService.checkSKUExists(prodSku);
+
+        if (!skuExists) {
+          res.json({
+            error: { type: 'nosku', message: 'Sku does not exists!' },
+          });
+          return;
+        }
+
         const productData = await productService.getProductBySku(prodSku);
         const imageData = await imageService.getImagesBySKU(prodSku);
         res.json({ productData, imageData });

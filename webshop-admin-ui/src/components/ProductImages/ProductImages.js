@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
+import { Table, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-export default class ProductImages extends Component {
-  state = {
-    sku: this.props.sku,
-    pictures: [],
-  };
-
+class ProductImages extends Component {
   async componentDidMount() {
     // const dataStream = await fetch(
     //   `http://localhost:5000/products/${this.state.sku}/pictures`
@@ -17,44 +12,42 @@ export default class ProductImages extends Component {
   }
 
   handleSetPrimary = async (id) => {
-    const result = await fetch(`http://localhost:5000/files/${id}`, {
-      method: 'PUT',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ sku: this.state.sku }),
-    });
-
-    if (result.ok) {
-      const newPictures = this.state.pictures.map((picture) => {
-        if (picture.id === id) {
-          picture.is_primary = 1;
-          return picture;
-        }
-        picture.is_primary = 0;
-        return picture;
-      });
-      this.setState({ pictures: newPictures });
-    }
+    // const result = await fetch(`http://localhost:5000/files/${id}`, {
+    //   method: 'PUT',
+    //   mode: 'cors',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ sku: this.state.sku }),
+    // });
+    // if (result.ok) {
+    //   const newPictures = this.state.pictures.map((picture) => {
+    //     if (picture.id === id) {
+    //       picture.is_primary = 1;
+    //       return picture;
+    //     }
+    //     picture.is_primary = 0;
+    //     return picture;
+    //   });
+    //   this.setState({ pictures: newPictures });
+    // }
   };
 
   handleDelete = async (id) => {
-    const result = await fetch(`http://localhost:5000/files/${id}`, {
-      method: 'DELETE',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fileId: id }),
-    });
-
-    if (result.ok) {
-      const newPictures = this.state.pictures.filter(
-        (picture) => picture.id !== id
-      );
-      this.setState({ pictures: newPictures });
-    }
+    // const result = await fetch(`http://localhost:5000/files/${id}`, {
+    //   method: 'DELETE',
+    //   mode: 'cors',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ fileId: id }),
+    // });
+    // if (result.ok) {
+    //   const newPictures = this.state.pictures.filter(
+    //     (picture) => picture.id !== id
+    //   );
+    //   this.setState({ pictures: newPictures });
+    // }
   };
 
   render() {
@@ -69,7 +62,7 @@ export default class ProductImages extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.state.pictures.map((picture, idx) => {
+          {this.props.images.map((picture, idx) => {
             return (
               <tr
                 key={`row_${idx}`}
@@ -118,3 +111,15 @@ export default class ProductImages extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    images: state.imagesForSingleProduct,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(mapStateToProps)(ProductImages);
