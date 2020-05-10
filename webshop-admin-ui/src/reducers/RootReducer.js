@@ -5,6 +5,8 @@ import {
   CLEAR_PRODUCT_DATA,
   MODIFY_PRODUCT_INFO,
   ADD_NEW_PRODUCT,
+  ADD_IMAGES,
+  GET_IMAGES,
 } from '../actions/Actions';
 
 export default function RootReducer(state = initialState, action) {
@@ -54,6 +56,26 @@ export default function RootReducer(state = initialState, action) {
           ? [...state.images, ...action.newProductInfo.images]
           : [...state.images],
       };
+
+    case ADD_IMAGES:
+      return {
+        ...state,
+        images: [
+          ...state.images.filter(
+            (image) => image.product_sku !== action.images[0].product_sku
+          ),
+          ...action.images,
+        ],
+      };
+
+    case GET_IMAGES:
+      return {
+        ...state,
+        imagesForSingleProduct: state.images.filter(
+          (image) => image.product_sku === action.sku
+        ),
+      };
+
     default:
       return state;
   }

@@ -16,7 +16,6 @@ class ProductController {
           const newProduct = {};
           const images = [];
           const missingFields = [];
-          let productResult, imageResults;
           if (err) {
             console.error(err);
             throw {
@@ -153,9 +152,11 @@ class ProductController {
                 );
               });
 
-              productResult = await productService.addProductToDB(newProduct);
+              const productResult = await productService.addProductToDB(
+                newProduct
+              );
 
-              imageResults = await imageService.addImagesToDb({
+              const imageResults = await imageService.addImagesToDb({
                 sku: productResult.sku,
                 images,
               });
@@ -164,6 +165,7 @@ class ProductController {
                 product: { ...productResult },
                 images: imageResults,
               });
+              return;
             } else {
               if (files.images) {
                 if (!sku || sku === 'undefined') {
@@ -199,19 +201,29 @@ class ProductController {
                 }
                 images.push(imageSrc + '/' + files.images.name);
 
-                productResult = await productService.addProductToDB(newProduct);
+                const productResult = await productService.addProductToDB(
+                  newProduct
+                );
 
-                imageResults = await imageService.addImagesToDb({
+                const imageResults = await imageService.addImagesToDb({
                   sku: productResult.sku,
                   images,
                 });
+
+                res.json({
+                  product: { ...productResult },
+                  images: imageResults,
+                });
+                return;
               }
 
-              productResult = await productService.addProductToDB(newProduct);
+              const productResult = await productService.addProductToDB(
+                newProduct
+              );
 
               res.json({
                 product: { ...productResult },
-                images: imageResults ? imageResults : [],
+                images: [],
               });
             }
           } catch (e) {
@@ -290,6 +302,89 @@ class ProductController {
     };
   }
 
+  static uploadNewPictures(options) {
+    const imageService = options.imageService;
+
+    return async (req, res) => {
+      try {
+        const form = formidable({ multiples: true });
+
+        await form.parse(req, async (err, fields, files) => {
+          const images = [];
+          if (err) {
+            console.error(err);
+            throw {
+              errors: [
+                {
+                  message: `Form data parse error: ${err.toString()}`,
+                },
+              ],
+            };
+          }
+
+          const { sku } = fields;
+
+          try {
+            let imageSrc = `http://localhost:5000/img/${sku}`;
+
+            if (files.images instanceof Array) {
+              files.images.forEach((f) => {
+                images.push(imageSrc + '/' + f.name);
+                fs.copyFileSync(
+                  f.path,
+                  `./static/img/${sku}/${f.name}`,
+                  (err) => {
+                    throw {
+                      errors: [
+                        {
+                          message: `File upload error: ${err.toString()}`,
+                        },
+                      ],
+                    };
+                  }
+                );
+              });
+              const result = await imageService.addImages({
+                sku,
+                images,
+              });
+
+              res.json(result);
+            } else {
+              fs.copyFileSync(
+                files.images.path,
+                `./static/img/${sku}/${files.images.name}`,
+                (err) => {
+                  throw {
+                    errors: [
+                      {
+                        message: `File upload error: ${err.toString()}`,
+                      },
+                    ],
+                  };
+                }
+              );
+
+              images.push(imageSrc + '/' + files.images.name);
+              const result = await imageService.addImages({
+                sku,
+                images,
+              });
+
+              res.json(result);
+            }
+          } catch (e) {
+            console.error(e.message);
+            res.json(e);
+          }
+        });
+      } catch (err) {
+        console.error(err.message);
+        res.json(err);
+      }
+    };
+  }
+
   // static modifyPrimaryPicture(options) {
   // 	const productService = options.productService;
 
@@ -302,77 +397,6 @@ class ProductController {
   // 				fileInfo
   // 			);
   // 			res.json(result);
-  // 		} catch (err) {
-  // 			console.error(err.toString());
-  // 			res.json(err);
-  // 		}
-  // 	};
-  // }
-
-  // static uploadNewPictures(options) {
-  // 	const productService = options.productService;
-
-  // 	return async (req, res) => {
-  // 		try {
-  // 			const form = formidable({ multiples: true });
-
-  // 			await form.parse(req, async (err, fields, files) => {
-  // 				const images = [];
-  // 				if (err) {
-  // 					console.error(err);
-  // 					throw new CustomError(
-  // 						'file_upload_error',
-  // 						err.toString()
-  // 					);
-  // 				}
-  // 				const { sku } = fields;
-
-  // 				try {
-  // 					let imageSrc = `http://localhost:5000/img/${sku}`;
-
-  // 					if (files.images instanceof Array) {
-  // 						files.images.forEach((f) => {
-  // 							images.push(imageSrc + '/' + f.name);
-  // 							fs.copyFileSync(
-  // 								f.path,
-  // 								`./static/img/${sku}/${f.name}`,
-  // 								(err) => {
-  // 									throw new CustomError(
-  // 										'file_upload_error',
-  // 										err.toString()
-  // 									);
-  // 								}
-  // 							);
-  // 						});
-  // 						const result = await productService.addImages({
-  // 							sku,
-  // 							images,
-  // 						});
-  // 						res.json(result);
-  // 					} else {
-  // 						fs.copyFileSync(
-  // 							files.images.path,
-  // 							`./static/img/${sku}/${files.images.name}`,
-  // 							(err) => {
-  // 								throw new CustomError(
-  // 									'file_upload_error',
-  // 									err.toString()
-  // 								);
-  // 							}
-  // 						);
-
-  // 						images.push(imageSrc + '/' + files.images.name);
-  // 						const result = await productService.addImages({
-  // 							sku,
-  // 							images,
-  // 						});
-  // 						res.json(result);
-  // 					}
-  // 				} catch (e) {
-  // 					console.error(e.message);
-  // 					res.json(e);
-  // 				}
-  // 			});
   // 		} catch (err) {
   // 			console.error(err.toString());
   // 			res.json(err);

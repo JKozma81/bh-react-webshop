@@ -3,13 +3,7 @@ import { Table, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 class ProductImages extends Component {
-  async componentDidMount() {
-    // const dataStream = await fetch(
-    //   `http://localhost:5000/products/${this.state.sku}/pictures`
-    // );
-    // const pictures = await dataStream.json();
-    // this.setState({ pictures });
-  }
+  async componentDidMount() {}
 
   handleSetPrimary = async (id) => {
     // const result = await fetch(`http://localhost:5000/files/${id}`, {
@@ -53,7 +47,7 @@ class ProductImages extends Component {
   render() {
     return (
       <Table bordered hover>
-        <thead>
+        <thead className="thead-light">
           <tr>
             <th>Image</th>
             <th>Path</th>
@@ -62,6 +56,13 @@ class ProductImages extends Component {
           </tr>
         </thead>
         <tbody>
+          {!this.props.images.length && (
+            <tr>
+              <td colSpan="4">
+                <p className="error text-center">No images uploaded!</p>
+              </td>
+            </tr>
+          )}
           {this.props.images.map((picture, idx) => {
             return (
               <tr

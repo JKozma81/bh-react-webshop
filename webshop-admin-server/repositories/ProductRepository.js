@@ -95,6 +95,7 @@ class ProductRepository {
                   result.desc,
                   result.specs
                 );
+
                 resultProductData.push(tempProduct);
               }
               resolve(resultProductData);

@@ -7,56 +7,72 @@ class ImageRepository {
     return new Promise((resolve, reject) => {
       try {
         this.dataBase.serialize(() => {
-          for (const [i, picture] of ImagesWithSku.images.entries()) {
-            if (i === 0) {
-              this.dataBase.run(
-                'INSERT INTO images(url, product_sku, is_primary) VALUES(?, ?, ?)',
-                [picture, ImagesWithSku.sku, 1],
-                (err) => {
-                  if (err !== null)
-                    reject({
-                      errors: [
-                        {
-                          type: 'application',
-                          message: `Application error at inserting images into the database: ${err.toString()}`,
-                        },
-                      ],
-                    });
-                }
-              );
-            } else {
-              this.dataBase.run(
-                'INSERT INTO images(url, product_sku, is_primary) VALUES(?, ?, ?)',
-                [picture, ImagesWithSku.sku, 0],
-                (err) => {
-                  if (err !== null)
-                    reject({
-                      errors: [
-                        {
-                          type: 'application',
-                          message: `Application error at inserting images into the database: ${err.toString()}`,
-                        },
-                      ],
-                    });
-                }
-              );
-            }
-          }
-
-          this.dataBase.all(
-            'SELECT id, url, product_sku, is_primary FROM images WHERE product_sku = ?',
-            ImagesWithSku.sku,
-            (err, imageResults) => {
+          this.dataBase.get(
+            'SELECT id FROM images WHERE product_sku = ? AND is_primary = 1',
+            [ImagesWithSku.sku],
+            (err, imageId) => {
               if (err !== null)
                 reject({
                   errors: [
                     {
                       type: 'application',
-                      message: `Application error at getting images from database: ${err.toString()}`,
+                      message: `Application error at checking primary image: ${err.toString()}`,
                     },
                   ],
                 });
-              resolve(imageResults);
+
+              for (const [i, picture] of ImagesWithSku.images.entries()) {
+                if (!imageId && i === 0) {
+                  this.dataBase.run(
+                    'INSERT INTO images(url, product_sku, is_primary) VALUES(?, ?, ?)',
+                    [picture, ImagesWithSku.sku, 1],
+                    (err) => {
+                      if (err !== null)
+                        reject({
+                          errors: [
+                            {
+                              type: 'application',
+                              message: `Application error at inserting images into the database: ${err.toString()}`,
+                            },
+                          ],
+                        });
+                    }
+                  );
+                } else {
+                  this.dataBase.run(
+                    'INSERT INTO images(url, product_sku, is_primary) VALUES(?, ?, ?)',
+                    [picture, ImagesWithSku.sku, 0],
+                    (err) => {
+                      if (err !== null)
+                        reject({
+                          errors: [
+                            {
+                              type: 'application',
+                              message: `Application error at inserting images into the database: ${err.toString()}`,
+                            },
+                          ],
+                        });
+                    }
+                  );
+                }
+              }
+
+              this.dataBase.all(
+                'SELECT id, url, product_sku, is_primary FROM images WHERE product_sku = ?',
+                ImagesWithSku.sku,
+                (err, imageResults) => {
+                  if (err !== null)
+                    reject({
+                      errors: [
+                        {
+                          type: 'application',
+                          message: `Application error at getting images from database: ${err.toString()}`,
+                        },
+                      ],
+                    });
+                  resolve(imageResults);
+                }
+              );
             }
           );
         });

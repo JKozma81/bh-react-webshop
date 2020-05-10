@@ -26,6 +26,14 @@ class ImageService {
       console.error(err.message);
     }
   }
+
+  async addImages(imageInfo) {
+    try {
+      return await this.repository.addImages(imageInfo);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 }
 
 module.exports = ImageService;

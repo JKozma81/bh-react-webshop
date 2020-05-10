@@ -43,6 +43,13 @@ app.post(
   })
 );
 
+app.put(
+  '/products/:sku',
+  ProductController.modifyProduct({
+    productService,
+  })
+);
+
 app.get(
   '/products/:sku/files',
   ProductController.getProductBySKU({
@@ -52,23 +59,16 @@ app.get(
   })
 );
 
-app.put(
-  '/products/:sku',
-  ProductController.modifyProduct({
-    productService,
+app.post(
+  '/products/:sku/files',
+  ProductController.uploadNewPictures({
+    imageService,
   })
 );
 
 // app.get(
 //   '/products/:sku/pictures',
 //   ProductController.getProductImages({
-//     productService,
-//   })
-// );
-
-// app.post(
-//   '/products/:sku/files',
-//   ProductController.uploadNewPictures({
 //     productService,
 //   })
 // );
