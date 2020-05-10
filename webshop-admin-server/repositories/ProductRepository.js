@@ -218,69 +218,6 @@ class ProductRepository {
     });
   }
 
-  // modifyPrimary(fileInfo) {
-  // 	return new Promise((resolve, reject) => {
-  // 		try {
-  // 			this.dataBase.serialize(() => {
-  // 				this.dataBase.run(
-  // 					'UPDATE images SET is_primary = ? WHERE product_sku = ?',
-  // 					[0, fileInfo.sku],
-  // 					(err) => {
-  // 						if (err !== null) reject(err);
-  // 					}
-  // 				);
-  // 				this.dataBase.run(
-  // 					'UPDATE images SET is_primary = ? WHERE id = ?',
-  // 					[1, fileInfo.fileId],
-  // 					(err) => {
-  // 						if (err !== null) reject(err);
-  // 					}
-  // 				);
-  // 				this.dataBase.all(
-  // 					'SELECT id, url, product_sku, is_primary FROM images WHERE product_sku = ?',
-  // 					fileInfo.sku,
-  // 					(err, imageResults) => {
-  // 						if (err !== null) reject(err);
-  // 						resolve(imageResults);
-  // 					}
-  // 				);
-  // 			});
-  // 		} catch (err) {
-  // 			console.error(err);
-  // 			reject(err);
-  // 		}
-  // 	});
-  // }
-
-  // addImagesToProduct(imageData) {
-  // 	return new Promise((resolve, reject) => {
-  // 		try {
-  // 			this.dataBase.serialize(() => {
-  // 				for (const picture of imageData.images) {
-  // 					this.dataBase.run(
-  // 						'INSERT INTO images(url, product_sku, is_primary) VALUES(?, ?, ?)',
-  // 						[picture, imageData.sku, 0],
-  // 						(err) => {
-  // 							if (err !== null) reject(err);
-  // 						}
-  // 					);
-  // 				}
-  // 				this.dataBase.all(
-  // 					'SELECT id, url, product_sku, is_primary FROM images WHERE product_sku = ?',
-  // 					imageData.sku,
-  // 					(err, imageResults) => {
-  // 						if (err !== null) reject(err);
-  // 						resolve(imageResults);
-  // 					}
-  // 				);
-  // 			});
-  // 		} catch (err) {
-  // 			console.error(err);
-  // 			reject(err);
-  // 		}
-  // 	});
-  // }
-
   // deleteImage(imageId) {
   // 	return new Promise((resolve, reject) => {
   // 		try {

@@ -385,24 +385,20 @@ class ProductController {
     };
   }
 
-  // static modifyPrimaryPicture(options) {
-  // 	const productService = options.productService;
+  static modifyPrimaryPicture(options) {
+    const imageService = options.imageService;
 
-  // 	return async (req, res) => {
-  // 		try {
-  // 			const fileInfo = {};
-  // 			fileInfo.fileId = Number(req.params.id);
-  // 			fileInfo.sku = req.body.sku;
-  // 			const result = await productService.modifyProductPrimaryPicture(
-  // 				fileInfo
-  // 			);
-  // 			res.json(result);
-  // 		} catch (err) {
-  // 			console.error(err.toString());
-  // 			res.json(err);
-  // 		}
-  // 	};
-  // }
+    return async (req, res) => {
+      try {
+        const fileId = Number(req.params.id);
+        const result = await imageService.modifyProductPrimaryPicture(fileId);
+        res.json(result);
+      } catch (err) {
+        console.error(err.toString());
+        res.json(err);
+      }
+    };
+  }
 
   // static deleteImageFromDB(options) {
   // 	const productService = options.productService;

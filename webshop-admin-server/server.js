@@ -66,16 +66,16 @@ app.post(
   })
 );
 
+app.put(
+  '/files/:id',
+  ProductController.modifyPrimaryPicture({
+    imageService,
+  })
+);
+
 // app.get(
 //   '/products/:sku/pictures',
 //   ProductController.getProductImages({
-//     productService,
-//   })
-// );
-
-// app.put(
-//   '/files/:id',
-//   ProductController.modifyPrimaryPicture({
 //     productService,
 //   })
 // );

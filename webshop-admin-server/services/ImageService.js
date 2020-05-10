@@ -34,6 +34,14 @@ class ImageService {
       console.error(err.message);
     }
   }
+
+  async modifyProductPrimaryPicture(imageId) {
+    try {
+      return await this.repository.modifyProductPrimaryPicture(imageId);
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
 }
 
 module.exports = ImageService;

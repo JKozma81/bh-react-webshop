@@ -7,6 +7,7 @@ import {
   ADD_NEW_PRODUCT,
   ADD_IMAGES,
   GET_IMAGES,
+  MODIFY_PRIMARY_PICTURE,
 } from '../actions/Actions';
 
 export default function RootReducer(state = initialState, action) {
@@ -74,6 +75,28 @@ export default function RootReducer(state = initialState, action) {
         imagesForSingleProduct: state.images.filter(
           (image) => image.product_sku === action.sku
         ),
+      };
+
+    case MODIFY_PRIMARY_PICTURE:
+      return {
+        ...state,
+        images: state.images.map((image) => {
+          if (image.product_sku === action.picture.product_sku) {
+            if (image.id === action.picture.id) {
+              return {
+                ...image,
+                ...action.picture,
+              };
+            }
+            return {
+              ...image,
+              is_primary: 0,
+            };
+          }
+          return {
+            ...image,
+          };
+        }),
       };
 
     default:

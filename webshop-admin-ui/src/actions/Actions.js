@@ -5,6 +5,7 @@ const MODIFY_PRODUCT_INFO = 'MODIFY_PRODUCT_INFO';
 const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCT';
 const ADD_IMAGES = 'ADD_IMAGES';
 const GET_IMAGES = 'GET_IMAGES';
+const MODIFY_PRIMARY_PICTURE = 'MODIFY_PRIMARY_PICTURE';
 
 function getProductsAndImages(products, images) {
   return {
@@ -56,6 +57,13 @@ function getImages(sku) {
   };
 }
 
+function modifyPrimaryPicture(picture) {
+  return {
+    type: MODIFY_PRIMARY_PICTURE,
+    picture,
+  };
+}
+
 export {
   GET_PRODUCTS_AND_IMAGES,
   GET_SINGLE_PRODUCT_DATA,
@@ -64,6 +72,7 @@ export {
   ADD_NEW_PRODUCT,
   ADD_IMAGES,
   GET_IMAGES,
+  MODIFY_PRIMARY_PICTURE,
   getProductsAndImages,
   getSingleProductData,
   clearProductData,
@@ -71,4 +80,5 @@ export {
   addNewProduct,
   addImages,
   getImages,
+  modifyPrimaryPicture,
 };

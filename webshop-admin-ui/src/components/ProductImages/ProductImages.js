@@ -1,30 +1,39 @@
 import React, { Component } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { modifyPrimaryPicture, getImages } from '../../actions/Actions';
 
 class ProductImages extends Component {
   async componentDidMount() {}
 
   handleSetPrimary = async (id) => {
-    // const result = await fetch(`http://localhost:5000/files/${id}`, {
-    //   method: 'PUT',
-    //   mode: 'cors',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ sku: this.state.sku }),
-    // });
-    // if (result.ok) {
-    //   const newPictures = this.state.pictures.map((picture) => {
-    //     if (picture.id === id) {
-    //       picture.is_primary = 1;
-    //       return picture;
-    //     }
-    //     picture.is_primary = 0;
-    //     return picture;
-    //   });
-    //   this.setState({ pictures: newPictures });
-    // }
+    const result = await fetch(`http://localhost:5000/files/${id}`, {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    if (result.ok) {
+      const pictureResult = await result.json();
+
+      console.log(pictureResult);
+
+      this.props.modifyPrimary(pictureResult);
+      this.props.getImages(pictureResult.product_sku);
+
+      // const newPictures = this.state.pictures.map((picture) => {
+      //   if (picture.id === id) {
+      //     picture.is_primary = 1;
+      //     return picture;
+      //   }
+      //   picture.is_primary = 0;
+      //   return picture;
+      // });
+      // this.setState({ pictures: newPictures });
+    }
   };
 
   handleDelete = async (id) => {
@@ -120,7 +129,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    modifyPrimary: (picture) => dispatch(modifyPrimaryPicture(picture)),
+    getImages: (sku) => dispatch(getImages(sku)),
+  };
 }
 
-export default connect(mapStateToProps)(ProductImages);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductImages);
