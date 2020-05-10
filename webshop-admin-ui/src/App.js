@@ -28,7 +28,7 @@ class App extends Component {
                 <Products />
               </Route>
               <Route path="/upload-product">
-                <UploadProductForm productData={{}} />
+                <UploadProductForm />
               </Route>
               <Route
                 path="/product/:sku"

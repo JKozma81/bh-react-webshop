@@ -4,15 +4,27 @@ class ImageService {
   }
 
   async addImagesToDb(ImagesWithSku) {
-    return await this.repository.addImages(ImagesWithSku);
+    try {
+      return await this.repository.addImages(ImagesWithSku);
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   async getAllImages() {
-    return await this.repository.getAllImages();
+    try {
+      return await this.repository.getAllImages();
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   async getImagesBySKU(prodSku) {
-    return await this.repository.getImagesBySKU(prodSku);
+    try {
+      return await this.repository.getImagesBySKU(prodSku);
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 }
 

@@ -1,6 +1,8 @@
 const GET_PRODUCTS_AND_IMAGES = 'GET_PRODUCTS_AND_IMAGES';
 const GET_SINGLE_PRODUCT_DATA = 'GET_SINGLE_PRODUCT_DATA';
 const CLEAR_PRODUCT_DATA = 'CLEAR_PRODUCT_DATA';
+const MODIFY_PRODUCT_INFO = 'MODIFY_PRODUCT_INFO';
+const ADD_NEW_PRODUCT = 'ADD_NEW_PRODUCT';
 
 function getProductsAndImages(products, images) {
   return {
@@ -24,11 +26,29 @@ function clearProductData() {
   };
 }
 
+function modifyProductInfo(modifiedProduct) {
+  return {
+    type: MODIFY_PRODUCT_INFO,
+    modifiedProduct,
+  };
+}
+
+function addNewProduct(newProductInfo) {
+  return {
+    type: ADD_NEW_PRODUCT,
+    newProductInfo,
+  };
+}
+
 export {
   GET_PRODUCTS_AND_IMAGES,
   GET_SINGLE_PRODUCT_DATA,
   CLEAR_PRODUCT_DATA,
+  MODIFY_PRODUCT_INFO,
+  ADD_NEW_PRODUCT,
   getProductsAndImages,
   getSingleProductData,
   clearProductData,
+  modifyProductInfo,
+  addNewProduct,
 };

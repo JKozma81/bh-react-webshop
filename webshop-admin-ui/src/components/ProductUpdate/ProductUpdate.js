@@ -9,15 +9,17 @@ import { getSingleProductData, clearProductData } from '../../actions/Actions';
 class ProductUpdate extends Component {
   state = {
     error: {},
-    productSKU: this.props.match.params.sku,
   };
 
   async componentDidMount() {
+    const productSKU = this.props.match.params.sku;
     const dataStream = await fetch(
-      `http://localhost:5000/products/${this.state.productSKU}/files`
+      `http://localhost:5000/products/${productSKU}/files`
     );
 
     const productDataFromDB = await dataStream.json();
+
+    console.log(productDataFromDB);
 
     if (productDataFromDB.error) {
       this.setState(() => ({ ...this.state, error: productDataFromDB.error }));
@@ -33,6 +35,7 @@ class ProductUpdate extends Component {
   }
 
   render() {
+    const productSKU = this.props.match.params.sku;
     return (
       <Container className="p-3">
         {Object.keys(this.state.error).length ? (
@@ -46,7 +49,7 @@ class ProductUpdate extends Component {
           <>
             <ProductEditForm />
             <ProductImages />
-            <ProductImageUpload sku={this.state.productSKU} />
+            <ProductImageUpload sku={productSKU} />
           </>
         )}
       </Container>

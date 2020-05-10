@@ -215,12 +215,12 @@ class ProductController {
               });
             }
           } catch (e) {
-            console.error('File', e.toString());
+            console.error('File operation error:', e.message);
             res.json(e);
           }
         });
       } catch (err) {
-        console.error('App', err.toString());
+        console.error('Application error:', err.message);
         res.json(err);
       }
     };
@@ -237,7 +237,7 @@ class ProductController {
 
         res.json({ productsData, imageData });
       } catch (err) {
-        console.error(err.toString());
+        console.error(err.message);
         res.json(err);
       }
     };
@@ -265,25 +265,30 @@ class ProductController {
         const imageData = await imageService.getImagesBySKU(prodSku);
         res.json({ productData, imageData });
       } catch (err) {
-        console.error(err.toString());
+        console.error(err.message);
         res.json(err);
       }
     };
   }
 
-  // static modifyProduct(options) {
-  // 	const productService = options.productService;
+  static modifyProduct(options) {
+    const productService = options.productService;
 
-  // 	return async (req, res) => {
-  // 		try {
-  // 			const result = await productService.modifyProductData(req.body);
-  // 			res.json(result);
-  // 		} catch (err) {
-  // 			console.log(err.toString());
-  // 			res.json(err);
-  // 		}
-  // 	};
-  // }
+    return async (req, res) => {
+      try {
+        const modifiedData = req.body;
+        const productSKU = req.params.sku;
+        const result = await productService.modifyProductData({
+          modifiedData,
+          productSKU,
+        });
+        res.json(result);
+      } catch (err) {
+        console.log(err.message);
+        res.json(err);
+      }
+    };
+  }
 
   // static modifyPrimaryPicture(options) {
   // 	const productService = options.productService;

@@ -31,26 +31,6 @@ class ProductRepository {
             }
           );
 
-          // for (const [i, picture] of productData.images.entries()) {
-          // 	if (i === 0) {
-          // 		this.dataBase.run(
-          // 			'INSERT INTO images(url, product_sku, is_primary) VALUES(?, ?, ?)',
-          // 			[picture, productData.sku, 1],
-          // 			(err) => {
-          // 				if (err !== null) reject(err);
-          // 			}
-          // 		);
-          // 	} else {
-          // 		this.dataBase.run(
-          // 			'INSERT INTO images(url, product_sku, is_primary) VALUES(?, ?, ?)',
-          // 			[picture, productData.sku, 0],
-          // 			(err) => {
-          // 				if (err !== null) reject(err);
-          // 			}
-          // 		);
-          // 	}
-          // }
-
           this.dataBase.get(
             'SELECT sku, name, price, desc, specs FROM products WHERE sku = ?',
             productData.sku,
@@ -76,7 +56,7 @@ class ProductRepository {
           );
         });
       } catch (err) {
-        console.error(err);
+        console.error(err.errors ? err.error.message : err.message);
         reject({
           errors: [
             {
@@ -122,7 +102,7 @@ class ProductRepository {
           );
         });
       } catch (err) {
-        console.error(err);
+        console.error(err.errors ? err.error.message : err.message);
         reject({
           errors: [
             {
@@ -164,7 +144,7 @@ class ProductRepository {
           );
         });
       } catch (err) {
-        console.error(err);
+        console.error(err.errors ? err.error.message : err.message);
         reject({
           errors: [
             {
@@ -177,53 +157,65 @@ class ProductRepository {
     });
   }
 
-  // modifyProduct(newData) {
-  // 	return new Promise((resolve, reject) => {
-  // 		try {
-  // 			this.dataBase.serialize(() => {
-  // 				this.dataBase.run(
-  // 					'UPDATE products SET name = ?, price = ?, desc = ?, specs = ? WHERE sku = ?',
-  // 					[
-  // 						newData.name,
-  // 						Number(newData.price),
-  // 						newData.desc,
-  // 						newData.specs,
-  // 						newData.sku,
-  // 					],
-  // 					(err) => {
-  // 						if (err !== null) reject(err);
-  // 					}
-  // 				);
-  // 				this.dataBase.get(
-  // 					'SELECT sku, name, price, desc, specs FROM products WHERE sku = ?',
-  // 					newData.sku,
-  // 					(err, result) => {
-  // 						if (err !== null) reject(err);
-  // 						this.dataBase.all(
-  // 							'SELECT id, url, product_sku, is_primary FROM images WHERE product_sku = ?',
-  // 							newData.sku,
-  // 							(err, imageResults) => {
-  // 								if (err !== null) reject(err);
-  // 								const updatedProduct = new Product(
-  // 									result.sku,
-  // 									result.name,
-  // 									result.price,
-  // 									result.desc,
-  // 									result.specs,
-  // 									imageResults
-  // 								);
-  // 								resolve(updatedProduct);
-  // 							}
-  // 						);
-  // 					}
-  // 				);
-  // 			});
-  // 		} catch (err) {
-  // 			console.error(err);
-  // 			reject(err);
-  // 		}
-  // 	});
-  // }
+  modifyProduct(newData) {
+    return new Promise((resolve, reject) => {
+      try {
+        this.dataBase.serialize(() => {
+          for (const property in newData.modifiedData) {
+            this.dataBase.run(
+              `UPDATE products SET ${property} = ? WHERE sku = ?`,
+              [newData.modifiedData[property], newData.productSKU],
+              (err) => {
+                if (err !== null)
+                  reject({
+                    errors: [
+                      {
+                        type: 'application',
+                        message: `Application error at modifying product informations ${property}: ${err.toString()}`,
+                      },
+                    ],
+                  });
+              }
+            );
+          }
+
+          this.dataBase.get(
+            'SELECT sku, name, price, desc, specs FROM products WHERE sku = ?',
+            newData.productSKU,
+            (err, result) => {
+              if (err !== null)
+                reject({
+                  errors: [
+                    {
+                      type: 'application',
+                      message: `Application error at getting getting modifyed product information: ${err.toString()}`,
+                    },
+                  ],
+                });
+              const updatedProduct = new Product(
+                result.sku,
+                result.name,
+                result.price,
+                result.desc,
+                result.specs
+              );
+              resolve(updatedProduct);
+            }
+          );
+        });
+      } catch (err) {
+        console.error(err.errors ? err.error.message : err.message);
+        reject({
+          errors: [
+            {
+              type: 'application',
+              message: `Application error at database operation: ${err.toString()}`,
+            },
+          ],
+        });
+      }
+    });
+  }
 
   // modifyPrimary(fileInfo) {
   // 	return new Promise((resolve, reject) => {

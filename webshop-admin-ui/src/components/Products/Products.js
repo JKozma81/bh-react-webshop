@@ -26,8 +26,8 @@ class Products extends Component {
     }
 
     return (
-      <Container className="text-center">
-        <h1>Products</h1>
+      <Container className="text-center p-3">
+        <h1 className="pb-3">Products</h1>
 
         {!this.props.products.length ? (
           <Container className="d-flex flex-column justify-content-center align-items-center">
@@ -39,7 +39,7 @@ class Products extends Component {
           </Container>
         ) : (
           <Table bordered hover size="sm" className="text-center">
-            <thead>
+            <thead className="thead-light">
               <tr>
                 <th>Main Image</th>
                 <th>SKU</th>

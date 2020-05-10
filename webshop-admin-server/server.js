@@ -26,6 +26,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(cors());
 
+app.get(
+  '/products',
+  ProductController.getProductsAndImages({
+    productService,
+    imageService,
+  })
+);
+
 app.post(
   '/product',
   ProductController.addProduct({
@@ -44,6 +52,13 @@ app.get(
   })
 );
 
+app.put(
+  '/products/:sku',
+  ProductController.modifyProduct({
+    productService,
+  })
+);
+
 // app.get(
 //   '/products/:sku/pictures',
 //   ProductController.getProductImages({
@@ -54,21 +69,6 @@ app.get(
 // app.post(
 //   '/products/:sku/files',
 //   ProductController.uploadNewPictures({
-//     productService,
-//   })
-// );
-
-app.get(
-  '/products',
-  ProductController.getProductsAndImages({
-    productService,
-    imageService,
-  })
-);
-
-// app.put(
-//   '/products/:sku',
-//   ProductController.modifyProduct({
 //     productService,
 //   })
 // );

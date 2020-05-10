@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 import { Form, Container, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { addNewProduct } from '../../actions/Actions';
 
-export default class UploadProductForm extends Component {
+class UploadProductForm extends Component {
   constructor(props) {
     super(props);
     this.fileInput = React.createRef();
@@ -10,6 +13,7 @@ export default class UploadProductForm extends Component {
       product: {},
       errors: [],
       missingFields: [],
+      uploaded: false,
     };
   }
 
@@ -30,19 +34,38 @@ export default class UploadProductForm extends Component {
     });
 
     if (result.ok) {
-      this.setState({
-        ...this.state,
+      const results = await result.json();
+      if (results.errors) {
+        this.setState((prevState) => ({
+          ...prevState,
+          errors: results.errors
+            ? [...prevState.errors, ...results.errors]
+            : [],
+          product: results.productData
+            ? { ...prevState.product, ...results.productData }
+            : {},
+          missingFields: results.missingFields
+            ? [...prevState.missingFields, ...results.missingFields]
+            : [],
+        }));
+        return;
+      }
+
+      this.setState((prevState) => ({
+        ...prevState,
         product: {},
         errors: [],
         missingFields: [],
-      });
+        uploaded: true,
+      }));
+
+      console.log(results);
+      this.props.addProduct(results);
     } else {
-      const results = await result.json();
-      this.setState({
-        ...this.state,
-        errors: [...this.state.errors, ...results.errors],
-        product: { ...this.state.product, ...results.productData },
-      });
+      this.setState((prevState) => ({
+        ...prevState,
+        errors: [...prevState, { message: result.statusText }],
+      }));
     }
   };
 
@@ -53,10 +76,10 @@ export default class UploadProductForm extends Component {
     const specText = specs.value;
 
     if (specs.value && !specText.includes('=')) {
-      this.setState(() => ({
-        ...this.state,
+      this.setState((prevState) => ({
+        ...prevState,
         errors: [
-          ...this.state.errors,
+          ...prevState.errors,
           {
             type: 'validation',
             message: 'Product specs must include a "=" character!',
@@ -113,7 +136,9 @@ export default class UploadProductForm extends Component {
               onKeyPress={this.handleSKUInput}
               maxLength="12"
               defaultValue={
-                this.props.productData.sku ? this.props.productData.sku : ''
+                Object.keys(this.props.productData).length
+                  ? this.props.productData.sku
+                  : ''
               }
               onChange={this.handleChange}
             />
@@ -125,7 +150,9 @@ export default class UploadProductForm extends Component {
               type="text"
               name="name"
               defaultValue={
-                this.props.productData.name ? this.props.productData.name : ''
+                Object.keys(this.props.productData).length
+                  ? this.props.productData.name
+                  : ''
               }
               onChange={this.handleChange}
               required
@@ -138,7 +165,9 @@ export default class UploadProductForm extends Component {
               type="number"
               name="price"
               defaultValue={
-                this.props.productData.price ? this.props.productData.price : ''
+                Object.keys(this.props.productData).length
+                  ? this.props.productData.price
+                  : ''
               }
               onChange={this.handleChange}
               required
@@ -152,7 +181,9 @@ export default class UploadProductForm extends Component {
               name="desc"
               maxLength="240"
               defaultValue={
-                this.props.productData.desc ? this.props.productData.desc : ''
+                Object.keys(this.props.productData).length
+                  ? this.props.productData.desc
+                  : ''
               }
               onChange={this.handleChange}
             />
@@ -167,7 +198,9 @@ export default class UploadProductForm extends Component {
               required
               onKeyPress={this.handleSpecsInput}
               defaultValue={
-                this.props.productData.specs ? this.props.productData.specs : ''
+                Object.keys(this.props.productData).length
+                  ? this.props.productData.specs
+                  : ''
               }
               onChange={this.handleChange}
             />
@@ -192,7 +225,22 @@ export default class UploadProductForm extends Component {
           errors={this.state.errors}
           missingFields={this.state.missingFields}
         />
+        {this.state.uploaded && <Redirect to="/products" />}
       </Container>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    productData: state.productData,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addProduct: (newProduct) => dispatch(addNewProduct(newProduct)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UploadProductForm);

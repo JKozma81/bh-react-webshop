@@ -2,45 +2,66 @@ import React, { Component } from 'react';
 import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 import { Form, Container, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { modifyProductInfo } from '../../actions/Actions';
 
 class ProductEditForm extends Component {
   state = {
     product: {},
     errors: [],
     missingFields: [],
+    updated: false,
   };
 
-  componentDidMount() {}
-
   updateData = async () => {
-    const formData = new FormData();
-    formData.append('sku', this.state.product.sku);
-    formData.append('name', this.state.product.name);
-    formData.append('price', this.state.product.price);
-    formData.append('desc', this.state.product.desc);
-    formData.append('spec', this.state.product.spec);
-    // const result = await fetch('http://localhost:5000/product', {
-    //   method: 'POST',
-    //   mode: 'cors',
-    //   body: formData,
-    // });
+    const result = await fetch(
+      `http://localhost:5000/products/${this.props.product.sku}`,
+      {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(this.state.product),
+      }
+    );
 
-    // if (result.ok) {
-    //   const results = await result.json();
-    //   this.setState({
-    //     ...this.state,
-    //     product: {},
-    //     errors: [],
-    //     missingFields: [],
-    //   });
-    // } else {
-    //   const results = await result.json();
-    //   this.setState({
-    //     ...this.state,
-    //     errors: [...this.state.errors, ...results.errors],
-    //     product: { ...this.state.product, ...results.productData },
-    //   });
-    // }
+    if (result.ok) {
+      const results = await result.json();
+      if (results.errors) {
+        this.setState((prevState) => ({
+          ...prevState,
+          errors: results.errors
+            ? [...prevState.errors, ...results.errors]
+            : [],
+          product: results.productData
+            ? { ...prevState.product, ...results.productData }
+            : {},
+          missingFields: results.missingFields
+            ? [...prevState.missingFields, ...results.missingFields]
+            : [],
+        }));
+        return;
+      }
+
+      this.props.modifyProduct(results);
+
+      this.setState((prevState) => ({
+        ...prevState,
+        updated: true,
+      }));
+
+      const timer = setTimeout(() => {
+        this.setState((prevState) => ({
+          ...prevState,
+          updated: false,
+        }));
+        clearTimeout(timer);
+      }, 4500);
+    } else {
+      this.setState((prevState) => ({
+        ...prevState,
+        errors: [...prevState, { message: result.statusText }],
+      }));
+    }
   };
 
   validate = (e) => {
@@ -50,10 +71,10 @@ class ProductEditForm extends Component {
     const specText = specs.value;
 
     if (specs.value && !specText.includes('=')) {
-      this.setState(() => ({
-        ...this.state,
+      this.setState((prevState) => ({
+        ...prevState,
         errors: [
-          ...this.state.errors,
+          ...prevState.errors,
           {
             type: 'validation',
             message: 'Product specs must include a "=" character!',
@@ -63,8 +84,22 @@ class ProductEditForm extends Component {
       validate = false;
     }
 
+    if (!Object.keys(this.state.product).length) {
+      validate = false;
+      this.setState((prevState) => ({
+        ...prevState,
+        errors: [
+          ...prevState.errors,
+          {
+            type: 'validation',
+            message: 'No modified information to update!',
+          },
+        ],
+      }));
+    }
+
     if (validate) {
-      this.uploadData();
+      this.updateData();
     }
   };
 
@@ -96,11 +131,7 @@ class ProductEditForm extends Component {
   render() {
     return (
       <Container className="p-3">
-        <Form
-          className="edit-form"
-          onSubmit={this.validate}
-          encType="multipart/form-data"
-        >
+        <Form className="edit-form" onSubmit={this.validate}>
           <Form.Group>
             <Form.Label>SKU</Form.Label>
             <Form.Control
@@ -110,7 +141,7 @@ class ProductEditForm extends Component {
               onKeyPress={this.handleSKUInput}
               maxLength="12"
               defaultValue={this.props.product.sku}
-              onChange={this.handleChange}
+              disabled
             />
           </Form.Group>
           <Form.Group>
@@ -152,7 +183,7 @@ class ProductEditForm extends Component {
             <Form.Control
               className="specs"
               as="textarea"
-              name="spec"
+              name="specs"
               required
               onKeyPress={this.handleSpecsInput}
               defaultValue={this.props.product.specs}
@@ -160,6 +191,13 @@ class ProductEditForm extends Component {
             />
           </Form.Group>
           <Form.Group className="text-right">
+            {this.state.updated && (
+              <span className="mr-2">
+                <strong style={{ color: 'green' }}>
+                  Product informations updated!
+                </strong>
+              </span>
+            )}
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -181,7 +219,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    modifyProduct: (productInfo) => dispatch(modifyProductInfo(productInfo)),
+  };
 }
 
-export default connect(mapStateToProps)(ProductEditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductEditForm);
