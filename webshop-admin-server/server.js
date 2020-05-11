@@ -27,66 +27,59 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(cors());
 
 app.get(
-  '/products',
-  ProductController.getProductsAndImages({
-    productService,
-    imageService,
-  })
+	'/products',
+	ProductController.getProductsAndImages({
+		productService,
+		imageService,
+	})
 );
 
 app.post(
-  '/product',
-  ProductController.addProduct({
-    productService,
-    skuService,
-    imageService,
-  })
+	'/product',
+	ProductController.addProduct({
+		productService,
+		skuService,
+		imageService,
+	})
 );
 
 app.put(
-  '/products/:sku',
-  ProductController.modifyProduct({
-    productService,
-  })
+	'/products/:sku',
+	ProductController.modifyProduct({
+		productService,
+	})
 );
 
 app.get(
-  '/products/:sku/files',
-  ProductController.getProductBySKU({
-    productService,
-    imageService,
-    skuService,
-  })
+	'/products/:sku/files',
+	ProductController.getProductBySKU({
+		productService,
+		imageService,
+		skuService,
+	})
 );
 
 app.post(
-  '/products/:sku/files',
-  ProductController.uploadNewPictures({
-    imageService,
-  })
+	'/products/:sku/files',
+	ProductController.uploadNewPictures({
+		imageService,
+	})
 );
 
 app.put(
-  '/files/:id',
-  ProductController.modifyPrimaryPicture({
-    imageService,
-  })
+	'/files/:id',
+	ProductController.modifyPrimaryPicture({
+		imageService,
+	})
 );
 
-// app.get(
-//   '/products/:sku/pictures',
-//   ProductController.getProductImages({
-//     productService,
-//   })
-// );
-
-// app.delete(
-//   '/files/:id',
-//   ProductController.deleteImageFromDB({
-//     productService,
-//   })
-// );
+app.delete(
+	'/files/:id',
+	ProductController.deleteImageFromDB({
+		imageService,
+	})
+);
 
 app.listen(port, () =>
-  console.log(`App is started and listening at http://localhost:${port}`)
+	console.log(`App is started and listening at http://localhost:${port}`)
 );
