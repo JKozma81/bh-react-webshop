@@ -7,88 +7,99 @@ const ADD_IMAGES = 'ADD_IMAGES';
 const GET_IMAGES = 'GET_IMAGES';
 const MODIFY_PRIMARY_PICTURE = 'MODIFY_PRIMARY_PICTURE';
 const REMOVE_IMAGES_FOR_PRODUCT = 'REMOVE_IMAGES_FOR_PRODUCT';
+const DELETE_PRODUCT = 'DELETE_PRODUCT';
 
 function getProductsAndImages(products, images) {
-	return {
-		type: GET_PRODUCTS_AND_IMAGES,
-		products,
-		images,
-	};
+  return {
+    type: GET_PRODUCTS_AND_IMAGES,
+    products,
+    images,
+  };
 }
 
 function getSingleProductData(productData, images) {
-	return {
-		type: GET_SINGLE_PRODUCT_DATA,
-		productData,
-		images,
-	};
+  return {
+    type: GET_SINGLE_PRODUCT_DATA,
+    productData,
+    images,
+  };
 }
 
 function clearProductData() {
-	return {
-		type: CLEAR_PRODUCT_DATA,
-	};
+  return {
+    type: CLEAR_PRODUCT_DATA,
+  };
 }
 
 function modifyProductInfo(modifiedProduct) {
-	return {
-		type: MODIFY_PRODUCT_INFO,
-		modifiedProduct,
-	};
+  return {
+    type: MODIFY_PRODUCT_INFO,
+    modifiedProduct,
+  };
 }
 
 function addNewProduct(newProductInfo) {
-	return {
-		type: ADD_NEW_PRODUCT,
-		newProductInfo,
-	};
+  return {
+    type: ADD_NEW_PRODUCT,
+    newProductInfo,
+  };
 }
 
 function addImages(images) {
-	return {
-		type: ADD_IMAGES,
-		images,
-	};
+  return {
+    type: ADD_IMAGES,
+    images,
+  };
 }
 
 function getImages(sku) {
-	return {
-		type: GET_IMAGES,
-		sku,
-	};
+  return {
+    type: GET_IMAGES,
+    sku,
+  };
 }
 
 function modifyPrimaryPicture(picture) {
-	return {
-		type: MODIFY_PRIMARY_PICTURE,
-		picture,
-	};
+  return {
+    type: MODIFY_PRIMARY_PICTURE,
+    picture,
+  };
 }
 
 function removeImagesForProduct(sku) {
-	return {
-		type: REMOVE_IMAGES_FOR_PRODUCT,
-		sku,
-	};
+  return {
+    type: REMOVE_IMAGES_FOR_PRODUCT,
+    sku,
+  };
+}
+
+function deleteProduct(remainingProducts, remainingImages) {
+  return {
+    type: DELETE_PRODUCT,
+    remainingProducts,
+    remainingImages,
+  };
 }
 
 export {
-	GET_PRODUCTS_AND_IMAGES,
-	GET_SINGLE_PRODUCT_DATA,
-	CLEAR_PRODUCT_DATA,
-	MODIFY_PRODUCT_INFO,
-	ADD_NEW_PRODUCT,
-	ADD_IMAGES,
-	GET_IMAGES,
-	MODIFY_PRIMARY_PICTURE,
-	REMOVE_IMAGES_FOR_PRODUCT,
-	getProductsAndImages,
-	getSingleProductData,
-	clearProductData,
-	modifyProductInfo,
-	addNewProduct,
-	addImages,
-	getImages,
-	modifyPrimaryPicture,
-	removeImagesForProduct,
+  GET_PRODUCTS_AND_IMAGES,
+  GET_SINGLE_PRODUCT_DATA,
+  CLEAR_PRODUCT_DATA,
+  MODIFY_PRODUCT_INFO,
+  ADD_NEW_PRODUCT,
+  ADD_IMAGES,
+  GET_IMAGES,
+  MODIFY_PRIMARY_PICTURE,
+  REMOVE_IMAGES_FOR_PRODUCT,
+  DELETE_PRODUCT,
+  getProductsAndImages,
+  getSingleProductData,
+  clearProductData,
+  modifyProductInfo,
+  addNewProduct,
+  addImages,
+  getImages,
+  modifyPrimaryPicture,
+  removeImagesForProduct,
+  deleteProduct,
 };

@@ -59,7 +59,6 @@ class UploadProductForm extends Component {
         uploaded: true,
       }));
 
-      console.log(results);
       this.props.addProduct(results);
     } else {
       this.setState((prevState) => ({
