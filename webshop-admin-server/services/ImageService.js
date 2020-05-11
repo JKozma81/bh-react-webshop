@@ -42,6 +42,14 @@ class ImageService {
 			console.error(err.message);
 		}
 	}
+
+	async deleteAllImages(sku) {
+		try {
+			return await this.repository.deleteAllImages(sku);
+		} catch (err) {
+			console.error(err.message);
+		}
+	}
 }
 
 module.exports = ImageService;

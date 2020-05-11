@@ -387,6 +387,58 @@ class ImageRepository {
 			}
 		});
 	}
+
+	deleteAllImages(sku) {
+		return new Promise((resolve, reject) => {
+			try {
+				this.dataBase.serialize(() => {
+					this.dataBase.run(
+						'DELETE FROM images WHERE product_sku = ?',
+						[sku],
+						(err) => {
+							if (err !== null)
+								reject({
+									errors: [
+										{
+											type: 'application',
+											message: `Application error at deleting images : ${err.toString()}`,
+										},
+									],
+								});
+						}
+					);
+
+					this.dataBase.all(
+						'SELECT id, url, product_sku, is_primary FROM images WHERE product_sku <> ?',
+						[sku],
+						(err, results) => {
+							if (err !== null)
+								reject({
+									errors: [
+										{
+											type: 'application',
+											message: `Application error at getting remaining images : ${err.toString()}`,
+										},
+									],
+								});
+
+							resolve(results);
+						}
+					);
+				});
+			} catch (err) {
+				console.error(err);
+				reject({
+					errors: [
+						{
+							type: 'application',
+							message: `Application error at database operation: ${err.toString()}`,
+						},
+					],
+				});
+			}
+		});
+	}
 }
 
 module.exports = ImageRepository;

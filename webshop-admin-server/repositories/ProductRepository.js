@@ -220,6 +220,61 @@ class ProductRepository {
 			}
 		});
 	}
+
+	deleteProduct(sku) {
+		return new Promise((resolve, reject) => {
+			try {
+				this.dataBase.serialize(() => {
+					this.dataBase.run(
+						'DELETE FROM products WHERE sku = ?',
+						[sku],
+						(err) => {
+							if (err !== null)
+								reject({
+									errors: [
+										{
+											type: 'application',
+											message: `Application error at deleting product from db: ${err.toString()}`,
+										},
+									],
+								});
+						}
+					);
+
+					this.dataBase.all(
+						'SELECT sku, name, price, desc, specs FROM products WHERE sku <> ?',
+						[sku],
+						(err, results) => {
+							if (err !== null)
+								reject({
+									errors: [
+										{
+											type: 'application',
+											message: `Application error at getting remaining products: ${err.toString()}`,
+										},
+									],
+								});
+
+							const productResults = results.map(
+								(product) => new Product({ ...product })
+							);
+							resolve(productResults);
+						}
+					);
+				});
+			} catch (err) {
+				console.error(err.errors ? err.error.message : err.message);
+				reject({
+					errors: [
+						{
+							type: 'application',
+							message: `Application error at database operation: ${err.toString()}`,
+						},
+					],
+				});
+			}
+		});
+	}
 }
 
 module.exports = ProductRepository;

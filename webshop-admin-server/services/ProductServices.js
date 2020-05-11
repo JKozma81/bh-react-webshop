@@ -33,6 +33,14 @@ class ProductServices {
 			console.error(err.message);
 		}
 	}
+
+	async deleteProduct(sku) {
+		try {
+			return await this.repository.deleteProduct(sku);
+		} catch (err) {
+			console.error(err.message);
+		}
+	}
 }
 
 module.exports = ProductServices;

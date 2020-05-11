@@ -445,6 +445,53 @@ class ProductController {
 			}
 		};
 	}
+
+	static deleteProduct(options) {
+		const imageService = options.imageService;
+		const productService = options.productService;
+
+		return async (req, res) => {
+			try {
+				const deleteSku = req.params.sku;
+
+				const remainingProducts = await productService.deleteProduct(
+					deleteSku
+				);
+				const remainingImages = await imageService.deleteAllImages(
+					deleteSku
+				);
+
+				const filesToRemove = fs.readdirSync(
+					`${path.join(__dirname, '..', 'static', 'img', deleteSku)}`
+				);
+
+				filesToRemove.forEach((fileName) => {
+					fs.unlinkSync(
+						`${path.join(
+							__dirname,
+							'..',
+							'static',
+							'img',
+							deleteSku,
+							fileName
+						)}`
+					);
+				});
+
+				fs.rmdirSync(
+					`${path.join(__dirname, '..', 'static', 'img', deleteSku)}`
+				);
+
+				res.json({
+					productsData: remainingProducts,
+					imagesData: remainingImages,
+				});
+			} catch (err) {
+				console.error(err.toString());
+				res.json(err);
+			}
+		};
+	}
 }
 
 module.exports = ProductController;

@@ -50,6 +50,14 @@ app.put(
 	})
 );
 
+app.delete(
+	'/product/:sku',
+	ProductController.deleteProduct({
+		imageService,
+		productService,
+	})
+);
+
 app.get(
 	'/products/:sku/files',
 	ProductController.getProductBySKU({
