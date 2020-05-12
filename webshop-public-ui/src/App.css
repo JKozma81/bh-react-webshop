@@ -1,0 +1,50 @@
+.prod-link,
+.nav-link {
+  text-decoration: none;
+}
+
+.selected {
+  color: darkblue;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.main-header {
+  min-height: 100px;
+}
+
+.main-footer {
+  height: 75px;
+}
+
+.product-card {
+  height: 600px;
+}
+
+.product-img {
+  height: 450px;
+}
+
+.main-content,
+.product-list,
+.prod-details-container {
+  min-height: 905px;
+}
+
+.height-300 {
+  min-height: 300px;
+}
+
+.tiny-img {
+  width: 100px;
+  height: 100px;
+}
+
+.tiny-img:hover {
+  cursor: pointer;
+}
+
+.big-img {
+  width: 350px;
+  height: 350px;
+}

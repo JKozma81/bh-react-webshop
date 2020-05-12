@@ -1,0 +1,11 @@
+/* 
+#5e8e3d -dark
+#95bf45 -light
+*/
+
+.Main-header {
+  min-height: 120px;
+  color: #95bf45;
+  background-image: linear-gradient(rgb(0, 132, 255), white);
+  box-shadow: 0 5px 20px black;
+}

@@ -1,0 +1,18 @@
+.Cart {
+  width: 300px;
+  height: 100px;
+  background-color: white;
+  font-weight: bold;
+  margin: 0;
+  border-radius: 5px;
+  border: 1px solid #5e8e3d;
+}
+
+.Cart p {
+  margin: 0;
+}
+
+.Cart-img {
+  width: 50px;
+  margin-left: 25px;
+}
