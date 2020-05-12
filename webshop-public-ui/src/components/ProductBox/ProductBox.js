@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card } from 'react-bootstrap';
+import CartControl from '../CartControl/CartControl';
 
 export default class ProductBox extends Component {
   render() {
@@ -11,22 +12,15 @@ export default class ProductBox extends Component {
           className="product-img"
         />
         <Card.Body>
-          <Card.Title>{this.props.product.name}</Card.Title>
           <Card.Text>
-            <span>Ár: €{this.props.product.price}</span>
-            <br />
-            <span>Leírás: {this.props.product.shortSpec}</span>
-            <br />
-            <span>
-              Raktáron:
-              {this.props.product.qty > 0 ? (
-                <b>{` ${this.props.product.qty} db`}</b>
-              ) : (
-                <b style={{ color: 'red' }}>Elfogyott</b>
-              )}
-            </span>
+            <span>{this.props.product.name}</span>
+            <span>{this.props.product.sku}</span>
+            <span>{this.props.product.price}</span>
           </Card.Text>
         </Card.Body>
+        <Card.Footer>
+          <CartControl product={this.props.product} />
+        </Card.Footer>
       </Card>
     );
   }
