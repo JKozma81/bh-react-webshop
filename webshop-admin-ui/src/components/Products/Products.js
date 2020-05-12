@@ -45,13 +45,23 @@ class Products extends Component {
                 <th>SKU</th>
                 <th>Name</th>
                 <th>Price</th>
+                <th>Stock</th>
                 <th>Operations</th>
               </tr>
             </thead>
             <tbody>
               {products.map((product, idx) => {
                 return (
-                  <tr key={`cell_${idx}`}>
+                  <tr
+                    key={`cell_${idx}`}
+                    className={`${
+                      product.qty === 0
+                        ? 'table-danger'
+                        : product.qty <= product.warning_at
+                        ? 'table-warning'
+                        : ''
+                    }`}
+                  >
                     <td>
                       {product.picture ? (
                         <img
@@ -70,7 +80,12 @@ class Products extends Component {
                     </td>
                     <td>{product.sku}</td>
                     <td>{product.name}</td>
-                    <td>{product.price}</td>
+                    <td>{`${product.price}$`}</td>
+                    {product.qty ? (
+                      <td>{product.qty}</td>
+                    ) : (
+                      <td>Out of stock</td>
+                    )}
                     <td>
                       <Link
                         to={`/product/${product.sku}`}
