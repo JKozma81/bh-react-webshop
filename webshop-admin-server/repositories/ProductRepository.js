@@ -10,13 +10,15 @@ class ProductRepository {
       try {
         this.dataBase.serialize(() => {
           this.dataBase.run(
-            'INSERT INTO products(sku, name, price, desc, specs) VALUES(?, ?, ?, ?, ?)',
+            'INSERT INTO products(sku, name, price, desc, specs, qty, warning_at) VALUES(?, ?, ?, ?, ?, ?, ?)',
             [
               productData.sku,
               productData.name,
               Number(productData.price),
               productData.desc,
               productData.specs,
+              productData.qty,
+              productData.warning_at,
             ],
             (err) => {
               if (err !== null)
@@ -32,7 +34,7 @@ class ProductRepository {
           );
 
           this.dataBase.get(
-            'SELECT sku, name, price, desc, specs FROM products WHERE sku = ?',
+            'SELECT sku, name, price, desc, specs, qty, warning_at FROM products WHERE sku = ?',
             productData.sku,
             (err, result) => {
               if (err !== null)
@@ -49,7 +51,9 @@ class ProductRepository {
                 result.name,
                 result.price,
                 result.desc,
-                result.specs
+                result.specs,
+                result.qty,
+                result.warning_at
               );
               resolve(newProduct);
             }
@@ -74,7 +78,7 @@ class ProductRepository {
       try {
         this.dataBase.serialize(() => {
           this.dataBase.all(
-            'SELECT sku, name, price, desc, specs FROM products',
+            'SELECT sku, name, price, desc, specs, qty, warning_at FROM products',
             (err, results) => {
               if (err !== null)
                 reject({
@@ -93,7 +97,9 @@ class ProductRepository {
                   result.name,
                   result.price,
                   result.desc,
-                  result.specs
+                  result.specs,
+                  result.qty,
+                  result.warning_at
                 );
 
                 resultProductData.push(tempProduct);
@@ -121,7 +127,7 @@ class ProductRepository {
       try {
         this.dataBase.serialize(() => {
           this.dataBase.get(
-            'SELECT sku, name, price, desc, specs FROM products WHERE sku = ?',
+            'SELECT sku, name, price, desc, specs, qty, warning_at FROM products WHERE sku = ?',
             sku,
             (err, result) => {
               if (err !== null)
@@ -138,7 +144,9 @@ class ProductRepository {
                 result.name,
                 result.price,
                 result.desc,
-                result.specs
+                result.specs,
+                result.qty,
+                result.warning_at
               );
               resolve(tempProduct);
             }
@@ -181,7 +189,7 @@ class ProductRepository {
           }
 
           this.dataBase.get(
-            'SELECT sku, name, price, desc, specs FROM products WHERE sku = ?',
+            'SELECT sku, name, price, desc, specs, qty, warning_at FROM products WHERE sku = ?',
             newData.productSKU,
             (err, result) => {
               if (err !== null)
@@ -198,7 +206,9 @@ class ProductRepository {
                 result.name,
                 result.price,
                 result.desc,
-                result.specs
+                result.specs,
+                result.qty,
+                result.warning_at
               );
               resolve(updatedProduct);
             }

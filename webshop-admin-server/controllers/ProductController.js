@@ -67,6 +67,8 @@ class ProductController {
           newProduct.name = name;
           newProduct.desc = desc;
           newProduct.specs = spec;
+          newProduct.qty = 0;
+          newProduct.warning_at = 0;
           if (!sku || sku === 'undefined') {
             newSku = skuService.generateSKU(name.toUpperCase());
             if (skuService.checkSKUExists(newSku)) {

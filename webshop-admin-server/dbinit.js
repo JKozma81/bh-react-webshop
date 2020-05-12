@@ -9,6 +9,8 @@ try {
                    name VARCHAR(100) NOT NULL,
                    desc VARCHAR(240) NOT NULL,
                    specs TEXT NOT NULL,
+                   qty INTEGER NOT NULL,
+                   warning_at INTEGER NOT NULL,
                    price INTEGER NOT NULL)`
     );
 
@@ -22,8 +24,8 @@ try {
                   )`
     );
 
-    dataBase.run(`INSERT INTO products(sku, name, desc, specs, price)
-                      VALUES("I1P", "iPhone 11 Pro", "The iPhone 11 Pro and iPhone 11 Pro Max are smartphones designed, developed and marketed by Apple Inc.", "Capacity=256GB,Height=144.0mm,Width=71.4mm,Depth=8.1mm,Weight=188grams,Display=5.8‑inch,Chip=A13", 1499)`);
+    dataBase.run(`INSERT INTO products(sku, name, desc, specs, price, qty, warning_at)
+                      VALUES("I1P", "iPhone 11 Pro", "The iPhone 11 Pro and iPhone 11 Pro Max are smartphones designed, developed and marketed by Apple Inc.", "Capacity=256GB,Height=144.0mm,Width=71.4mm,Depth=8.1mm,Weight=188grams,Display=5.8‑inch,Chip=A13", 1499, 5, 2)`);
     dataBase.run(`INSERT INTO images(url, product_sku, is_primary)
                       VALUES("http://localhost:5000/img/I1P/images_2.jpg", "I1P", 1)`);
     dataBase.run(`INSERT INTO images(url, product_sku, is_primary)

@@ -167,6 +167,28 @@ class ProductEditForm extends Component {
             />
           </Form.Group>
           <Form.Group>
+            <Form.Label>Product quantity:</Form.Label>
+            <Form.Control
+              className="qty"
+              type="number"
+              name="qty"
+              defaultValue={this.props.product.qty}
+              onChange={this.handleChange}
+              min="0"
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Warning at:</Form.Label>
+            <Form.Control
+              className="warning_at"
+              type="number"
+              name="warning_at"
+              defaultValue={this.props.product.warning_at}
+              onChange={this.handleChange}
+              min="0"
+            />
+          </Form.Group>
+          <Form.Group>
             <Form.Label>Product description:</Form.Label>
             <Form.Control
               className="desc"
