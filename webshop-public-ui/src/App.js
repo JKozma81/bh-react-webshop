@@ -6,6 +6,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import Header from './components/Header/Header';
 import Products from './components/Products/Products';
 import Footer from './components/Footer/Footer';
+import { connect } from 'react-redux';
 
 class App extends Component {
   render() {
@@ -41,4 +42,11 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    products: state.products,
+    cart: state.cart,
+  };
+}
+
+export default connect(mapStateToProps)(App);

@@ -6,6 +6,7 @@
   margin: 0;
   border-radius: 5px;
   border: 1px solid #5e8e3d;
+  position: relative;
 }
 
 .Cart p {
@@ -15,4 +16,24 @@
 .Cart-img {
   width: 50px;
   margin-left: 25px;
+}
+
+.Cart-popup {
+  display: none;
+  width: 400px;
+  height: 250px;
+  position: absolute;
+  left: -100px;
+  top: 100%;
+  z-index: 999;
+  border: 1px solid #5e8e3d;
+  background-color: white;
+}
+
+.Cart:hover {
+  cursor: pointer;
+}
+
+.Cart:hover .Cart-popup {
+  display: block;
 }
