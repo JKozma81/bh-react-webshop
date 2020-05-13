@@ -18,15 +18,6 @@ class ProductDetail extends Component {
 				(item) => item.sku === productSKU
 			),
 		}));
-		// this.setState({ loading: true });
-		// const dataStream = await fetch(
-		//   `http://localhost:5000/products/${this.props.productId}`
-		// );
-		// const productDataFromServer = await dataStream.json();
-		// this.setState({
-		//   productData: productDataFromServer,
-		//   loading: false,
-		// });
 	}
 
 	render() {
@@ -42,10 +33,7 @@ class ProductDetail extends Component {
 				</Row>
 				<Row>
 					<Col className="height-300 border p-3">
-						<ProductSpec
-							params={this.state.product.params}
-							url={this.state.product.url}
-						/>
+						<ProductSpec params={this.state.product.specs} />
 					</Col>
 				</Row>
 				<Row>

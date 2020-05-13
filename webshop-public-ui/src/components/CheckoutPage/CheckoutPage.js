@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import CartItemList from '../../actions/CartItemList/CartItemList';
-import CheckoutForm from '../../actions/CheckoutForm/CheckoutForm';
+import CartItemList from '../CartItemList/CartItemList';
+import CheckoutForm from '../CheckoutForm/CheckoutForm';
 
 export default function CheckoutPage(props) {
 	return (

@@ -1,5 +1,10 @@
 import InitialState from '../store/Store';
-import { ADD_TO_CART, REMOVE_ONE, EMPTY_CART } from '../actions/Actions';
+import {
+	ADD_TO_CART,
+	REMOVE_ONE,
+	EMPTY_CART,
+	GET_ITEMS_FROM_SERVER,
+} from '../actions/Actions';
 
 export default function RootReducer(state = InitialState, action) {
 	switch (action.type) {
@@ -144,6 +149,14 @@ export default function RootReducer(state = InitialState, action) {
 				...state,
 				products: newProducts,
 				cart: newCart,
+			};
+		}
+
+		case GET_ITEMS_FROM_SERVER: {
+			return {
+				...state,
+				products: action.items.productsData,
+				images: action.items.imageData,
 			};
 		}
 

@@ -10,8 +10,29 @@ import ProductDetail from './components/ProductDetail/ProductDetail';
 import Footer from './components/Footer/Footer';
 import CartPage from './components/CartPage/CartPage';
 import CheckoutPage from './components/CheckoutPage/CheckoutPage';
+import { getItemsFromServer } from './actions/Actions';
 
 class App extends Component {
+	state = {
+		backendError: '',
+	};
+
+	async componentDidMount() {
+		const dataStream = await fetch('http://localhost:5000/products');
+		if (!dataStream.ok) {
+			this.setState({
+				...this.state,
+				backendError: dataStream.statusText,
+			});
+			return;
+		}
+
+		if (dataStream.ok) {
+			const productsAndImages = await dataStream.json();
+			this.props.getItems(productsAndImages);
+		}
+	}
+
 	render() {
 		return (
 			<Container fluid>
@@ -19,6 +40,9 @@ class App extends Component {
 					<Row>
 						<Header />
 					</Row>
+					{this.state.backendError && (
+						<span>{this.state.backendError}</span>
+					)}
 					<Row className="main-content">
 						<Switch>
 							<Route exact path="/">
@@ -61,4 +85,10 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+	return {
+		getItems: (items) => dispatch(getItemsFromServer(items)),
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

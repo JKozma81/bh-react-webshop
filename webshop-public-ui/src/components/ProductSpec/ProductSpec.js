@@ -6,13 +6,7 @@ export default function productSpec(props) {
 		<Container>
 			<Table striped bordered hover size="sm">
 				<thead className="text-center">
-					<tr>
-						{/* {Object.keys(JSON.parse(props.params)).map(
-							(key, idx) => (
-								<th key={`th_${idx}`}>{key}</th>
-							)
-						)} */}
-					</tr>
+					<tr>{props.params}</tr>
 				</thead>
 				<tbody>
 					<tr>

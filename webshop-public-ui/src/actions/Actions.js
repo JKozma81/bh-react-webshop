@@ -1,6 +1,7 @@
 const ADD_TO_CART = 'ADD_TO_CART';
 const REMOVE_ONE = 'REMOVE_ONE';
 const EMPTY_CART = 'EMPTY_CART';
+const GET_ITEMS_FROM_SERVER = 'GET_ITEMS_FROM_SERVER';
 
 function addToCart(itemSku) {
 	return {
@@ -22,4 +23,20 @@ function emptyCart() {
 	};
 }
 
-export { ADD_TO_CART, REMOVE_ONE, EMPTY_CART, emptyCart, addToCart, removeOne };
+function getItemsFromServer(items) {
+	return {
+		type: GET_ITEMS_FROM_SERVER,
+		items,
+	};
+}
+
+export {
+	ADD_TO_CART,
+	REMOVE_ONE,
+	EMPTY_CART,
+	GET_ITEMS_FROM_SERVER,
+	getItemsFromServer,
+	emptyCart,
+	addToCart,
+	removeOne,
+};

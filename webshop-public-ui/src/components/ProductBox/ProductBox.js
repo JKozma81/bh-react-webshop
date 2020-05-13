@@ -10,7 +10,7 @@ export default class ProductBox extends Component {
 				<Link to={`/products/${this.props.product.sku}`}>
 					<Card.Img
 						variant="top"
-						src={this.props.product.image}
+						src={this.props.product.picture.url}
 						className="product-img"
 					/>
 				</Link>
