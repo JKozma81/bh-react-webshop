@@ -1,62 +1,65 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 
-// import ProductInfo from '../ProductInfo/ProductInfo';
-// import ProductSpec from '../ProductSpec/ProductSpec';
-// import ImageCarousel from '../ImageCarousel/ImageCarousel';
+import ProductInfo from '../ProductInfo/ProductInfo';
+import ProductSpec from '../ProductSpec/ProductSpec';
+import ImageCarousel from '../ImageCarousel/ImageCarousel';
+import { connect } from 'react-redux';
 
-export default class ProductDetail extends Component {
-  state = {
-    productData: null,
-    loading: false,
-    idError: '',
-  };
+class ProductDetail extends Component {
+	state = {
+		product: {},
+	};
+	async componentDidMount() {
+		const productSKU = this.props.productId;
+		this.setState((prevState) => ({
+			...prevState,
+			product: this.props.products.find(
+				(item) => item.sku === productSKU
+			),
+		}));
+		// this.setState({ loading: true });
+		// const dataStream = await fetch(
+		//   `http://localhost:5000/products/${this.props.productId}`
+		// );
+		// const productDataFromServer = await dataStream.json();
+		// this.setState({
+		//   productData: productDataFromServer,
+		//   loading: false,
+		// });
+	}
 
-  async componentDidMount() {
-    // this.setState({ loading: true });
-    // const dataStream = await fetch(
-    //   `http://localhost:5000/products/${this.props.productId}`
-    // );
-    // const productDataFromServer = await dataStream.json();
-    // this.setState({
-    //   productData: productDataFromServer,
-    //   loading: false,
-    // });
-  }
-
-  render() {
-    const product = this.state.productData && this.state.productData.products;
-    const images = this.state.productData && this.state.productData.images;
-    return (
-      <Container className="prod-details-container">
-        {this.state.productData ? (
-          <>
-            <Row>
-              <Col md={6} className="height-300 border">
-                {/* <ImageCarousel images={images} /> */}
-              </Col>
-              <Col md={6} className="p-3 height-300 border">
-                {/* <ProductInfo
-                  name={product.name}
-                  price={product.price}
-                  shortSpec={product.shortSpec}
-                  qty={product.qty}
-                /> */}
-              </Col>
-            </Row>
-            <Row>
-              <Col className="height-300 border p-3">
-                {/* <ProductSpec params={product.params} url={product.url} /> */}
-              </Col>
-            </Row>
-            <Row>
-              <Col className="height-300 border">Ajánlott termékek</Col>
-            </Row>
-          </>
-        ) : (
-          'loading'
-        )}
-      </Container>
-    );
-  }
+	render() {
+		return (
+			<Container className="prod-details-container mt-5">
+				<Row>
+					<Col md={6} className="height-300 border">
+						{/* <ImageCarousel images={images} /> */}
+					</Col>
+					<Col md={6} className="p-3 height-300 border">
+						<ProductInfo {...this.state.product} />
+					</Col>
+				</Row>
+				<Row>
+					<Col className="height-300 border p-3">
+						<ProductSpec
+							params={this.state.product.params}
+							url={this.state.product.url}
+						/>
+					</Col>
+				</Row>
+				<Row>
+					<Col className="height-300 border">Ajánlott termékek</Col>
+				</Row>
+			</Container>
+		);
+	}
 }
+
+function mapStateToProps(state) {
+	return {
+		products: state.products,
+	};
+}
+
+export default connect(mapStateToProps)(ProductDetail);

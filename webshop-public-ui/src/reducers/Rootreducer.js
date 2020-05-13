@@ -81,11 +81,12 @@ export default function RootReducer(state = InitialState, action) {
 
 			if (cartItem) {
 				if (cartItem.qty - 1 <= 0) {
-					newCart = state.cart.filter((item) => {
+					newCart = [];
+					state.cart.forEach((item) => {
 						if (item.sku !== cartItem.sku) {
-							return {
+							newCart.push({
 								...item,
-							};
+							});
 						}
 					});
 				} else {
