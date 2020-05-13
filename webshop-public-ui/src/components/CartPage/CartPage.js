@@ -3,7 +3,7 @@ import { Container, Row, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import CartItem from '../CartItem/CartItem';
 import { emptyCart } from '../../actions/Actions';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 class CartPage extends Component {
 	render() {
@@ -34,7 +34,9 @@ class CartPage extends Component {
 					>
 						Empty cart
 					</Button>
-					<Button variant={'primary'}>Checkout</Button>
+					<Link to="/checkout" className="btn btn-primary">
+						Checkout
+					</Link>
 				</Row>
 				{this.props.cart.length <= 0 && <Redirect to="/" />}
 			</Container>

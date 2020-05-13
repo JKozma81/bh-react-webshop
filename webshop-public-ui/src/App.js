@@ -9,6 +9,7 @@ import Products from './components/Products/Products';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import Footer from './components/Footer/Footer';
 import CartPage from './components/CartPage/CartPage';
+import CheckoutPage from './components/CheckoutPage/CheckoutPage';
 
 class App extends Component {
 	render() {
@@ -39,7 +40,9 @@ class App extends Component {
 									/>
 								)}
 							></Route>
-							{/* <Route path="/orders">Orders</Route> */}
+							<Route path="/checkout">
+								<CheckoutPage />
+							</Route>
 						</Switch>
 					</Row>
 					<Row>
