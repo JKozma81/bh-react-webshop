@@ -8,6 +8,7 @@ import Header from './components/Header/Header';
 import Products from './components/Products/Products';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import Footer from './components/Footer/Footer';
+import CartPage from './components/CartPage/CartPage';
 
 class App extends Component {
 	render() {
@@ -23,6 +24,11 @@ class App extends Component {
 								<Col xs={9}>
 									<Container>Offerings</Container>
 									<Products className="main-content" />
+								</Col>
+							</Route>
+							<Route exact path="/cart">
+								<Col xs={9}>
+									<CartPage />
 								</Col>
 							</Route>
 							<Route

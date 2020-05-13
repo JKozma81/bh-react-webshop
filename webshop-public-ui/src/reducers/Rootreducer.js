@@ -1,5 +1,5 @@
 import InitialState from '../store/Store';
-import { ADD_TO_CART, REMOVE_ONE } from '../actions/Actions';
+import { ADD_TO_CART, REMOVE_ONE, EMPTY_CART } from '../actions/Actions';
 
 export default function RootReducer(state = InitialState, action) {
 	switch (action.type) {
@@ -113,6 +113,33 @@ export default function RootReducer(state = InitialState, action) {
 					},
 				];
 			}
+			return {
+				...state,
+				products: newProducts,
+				cart: newCart,
+			};
+		}
+
+		case EMPTY_CART: {
+			const newProducts = state.products.map((item) => {
+				const itemInCart = state.cart.find(
+					(cartItem) => cartItem.sku === item.sku
+				);
+
+				if (!itemInCart) {
+					return {
+						...item,
+					};
+				}
+
+				return {
+					...item,
+					qty: item.qty + itemInCart.qty,
+				};
+			});
+
+			const newCart = [];
+
 			return {
 				...state,
 				products: newProducts,
