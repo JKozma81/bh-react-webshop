@@ -6,54 +6,69 @@ import { emptyCart } from '../../actions/Actions';
 import { Redirect, Link } from 'react-router-dom';
 
 class CartPage extends Component {
-	render() {
-		const totalPrice =
-			this.props.cart.length > 0
-				? this.props.cart.reduce(
-						(total, item) => (total += item.price * item.qty),
-						0
-				  )
-				: 0;
-		return (
-			<Container>
-				<h1>Your cart</h1>
-				<Row>
-					{this.props.cart.map((item, idx) => (
-						<CartItem key={`item_${idx}`} {...item} />
-					))}
-				</Row>
-				<Row>
-					<p>
-						<strong>Total price: {totalPrice}</strong>
-					</p>
-				</Row>
-				<Row>
-					<Button
-						variant={'danger'}
-						onClick={() => this.props.emptyOutCart()}
-					>
-						Empty cart
-					</Button>
-					<Link to="/checkout" className="btn btn-primary">
-						Checkout
-					</Link>
-				</Row>
-				{this.props.cart.length <= 0 && <Redirect to="/" />}
-			</Container>
-		);
-	}
+  render() {
+    const totalPrice =
+      this.props.cart.length > 0
+        ? this.props.cart.reduce(
+            (total, item) => (total += item.price * item.qty),
+            0
+          )
+        : 0;
+    return (
+      <Container className="mt-5 text-center p-3">
+        <h1>Your cart</h1>
+        <Row className="justify-content-center align-items-center">
+          {this.props.cart.map((item, idx) => (
+            <CartItem key={`item_${idx}`} {...item} />
+          ))}
+        </Row>
+        <Row className="text-right">
+          <p>
+            <strong>Total price: {totalPrice}</strong>
+          </p>
+        </Row>
+        <Row className="justify-content-between">
+          <Button variant={'danger'} onClick={() => this.props.emptyOutCart()}>
+            Empty cart
+          </Button>
+          <Link to="/checkout" className="btn btn-primary">
+            Checkout
+          </Link>
+        </Row>
+        {this.props.cart.length <= 0 && <Redirect to="/" />}
+      </Container>
+    );
+  }
 }
 
 function mapStateToProps(state) {
-	return {
-		cart: state.cart,
-	};
+  const modifiedCart = state.cart.map((cartItem) => {
+    const searchResult = state.images.find(
+      (image) => image.product_sku === cartItem.sku
+    );
+
+    if (!searchResult) {
+      return {
+        ...cartItem,
+        image: '',
+      };
+    }
+
+    return {
+      ...cartItem,
+      image: searchResult.url,
+    };
+  });
+
+  return {
+    cart: modifiedCart,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-	return {
-		emptyOutCart: () => dispatch(emptyCart()),
-	};
+  return {
+    emptyOutCart: () => dispatch(emptyCart()),
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CartPage);

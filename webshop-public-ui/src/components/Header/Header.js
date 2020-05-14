@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Container, Image } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 import classes from './Header.module.css';
 import Logo from '../Logo/Logo';
 import HeaderCart from '../HeaderCart/HeaderCart';

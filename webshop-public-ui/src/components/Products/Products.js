@@ -1,37 +1,41 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Col, Spinner, Container } from 'react-bootstrap';
+import { Container, Col, CardDeck } from 'react-bootstrap';
+import classes from './Products.module.css';
 import { connect } from 'react-redux';
 
 import ProductBox from '../ProductBox/ProductBox';
 
 class Products extends Component {
-	async componentDidMount() {}
+  async componentDidMount() {}
 
-	render() {
-		return (
-			<Container>
-				{this.props.products.map((product, idx) => (
-					<ProductBox key={`prod_${idx}`} product={product} />
-				))}
-			</Container>
-		);
-	}
+  render() {
+    return (
+      <Container className={`${classes.Products} mt-5`}>
+        <CardDeck>
+          {this.props.products.map((product, idx) => (
+            <Col xs={3} key={`prod_${idx}`}>
+              <ProductBox product={product} />
+            </Col>
+          ))}
+        </CardDeck>
+      </Container>
+    );
+  }
 }
 
 function mapStateToProps(state) {
-	return {
-		products: state.products.map((item) => {
-			const primaryPicture = state.images.find(
-				(picture) =>
-					picture.product_sku === item.sku && picture.is_primary === 1
-			);
-			return {
-				...item,
-				picture: primaryPicture,
-			};
-		}),
-	};
+  return {
+    products: state.products.map((item) => {
+      const primaryPicture = state.images.find(
+        (picture) =>
+          picture.product_sku === item.sku && picture.is_primary === 1
+      );
+      return {
+        ...item,
+        picture: primaryPicture,
+      };
+    }),
+  };
 }
 
 export default connect(mapStateToProps)(Products);

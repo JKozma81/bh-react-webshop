@@ -1,7 +1,7 @@
 .Cart {
   width: 300px;
   height: 100px;
-  background-color: white;
+  background-color: #fff;
   font-weight: bold;
   margin: 0;
   border-radius: 5px;
@@ -21,13 +21,16 @@
 .Cart-popup {
   display: none;
   width: 400px;
-  height: 250px;
+  min-height: 150px;
+  max-height: 250px;
+  overflow-y: scroll;
   position: absolute;
   left: -100px;
   top: 100%;
   z-index: 999;
   border: 1px solid #5e8e3d;
-  background-color: white;
+  background-color: #fff;
+  padding: 15px;
 }
 
 .Cart:hover {

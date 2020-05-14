@@ -1,0 +1,11 @@
+.Product-link {
+  text-decoration: none !important;
+}
+
+.Product-link:hover {
+  cursor: pointer;
+}
+
+.Box {
+  box-shadow: 5px 5px 25px black;
+}

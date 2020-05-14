@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { deleteProduct } from '../../actions/Actions';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class DeleteModal extends Component {
   state = {
