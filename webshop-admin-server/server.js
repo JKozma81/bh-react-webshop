@@ -5,16 +5,31 @@ const sqlite3 = require('sqlite3').verbose();
 const dataBase = new sqlite3.Database('./model/webshop.db');
 
 const ProductController = require('./controllers/ProductController');
+const OrdersController = require('./controllers/OrdersController');
 
 const SKUService = require('./services/SkuService');
 const ProductServices = require('./services/ProductServices');
+const OrdersService = require('./services/OrdersService');
+const RecommendationsService = require('./services/RecommendationsService');
+const PromotionsService = require('./services/PromotionsService');
 const ProductRepository = require('./repositories/ProductRepository');
 const ImageService = require('./services/ImageService');
 const ImageRepository = require('./repositories/ImageRepository');
+const OrdersRepository = require('./repositories/OrdersRepository');
+const PromotionsRepository = require('./repositories/PromotionsRepository');
+const RecommendedRepository = require('./repositories/RecommendedRepository');
 const productRepository = new ProductRepository(dataBase);
-const productService = new ProductServices(productRepository);
+const ordersRepository = new OrdersRepository(dataBase);
+const promotionsRepository = new PromotionsRepository(dataBase);
+const recommendedRepository = new RecommendedRepository(dataBase);
 const imageRepository = new ImageRepository(dataBase);
+const productService = new ProductServices(productRepository);
 const imageService = new ImageService(imageRepository);
+const ordersService = new OrdersService(ordersRepository);
+const promotionsService = new PromotionsService(promotionsRepository);
+const recommendationsService = new RecommendationsService(
+	recommendedRepository
+);
 const skuService = new SKUService();
 
 const app = express();
@@ -31,6 +46,8 @@ app.get(
 	ProductController.getProductsAndImages({
 		productService,
 		imageService,
+		promotionsService,
+		recommendationsService,
 	})
 );
 
@@ -42,6 +59,21 @@ app.post(
 		imageService,
 	})
 );
+
+app.get(
+	'/orders',
+	OrdersController.getOrders({
+		ordersService,
+	})
+);
+
+// app.post(
+// 	'/orders',
+// 	OrdersController.addOrder({
+// 		productService,
+// 		ordersService,
+// 	})
+// );
 
 app.put(
 	'/products/:sku',

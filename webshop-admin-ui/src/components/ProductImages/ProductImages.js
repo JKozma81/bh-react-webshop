@@ -80,6 +80,7 @@ class ProductImages extends Component {
 											<img
 												src={picture.url}
 												alt="product"
+												style={{ maxWidth: '150px' }}
 											/>
 										}
 									</td>
