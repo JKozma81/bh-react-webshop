@@ -21,7 +21,6 @@ class CheckoutForm extends Component {
 
 	handleSubmit = async (evt) => {
 		evt.preventDefault();
-		const formData = new FormData();
 
 		if (this.props.cartItemsAndSkus.length <= 0) {
 			this.setState({
@@ -31,18 +30,23 @@ class CheckoutForm extends Component {
 			return;
 		}
 
-		formData.append('orderDetails', this.props.cartItemsAndSkus);
-		formData.append('name', this.state.name);
-		formData.append('email', this.state.email);
-		formData.append('address', this.state.address);
-
 		const resp = await fetch('http://localhost:5000/orders', {
 			method: 'POST',
+			mode: 'cors',
 			headers: {
 				'content-type': 'application/json',
 			},
-			body: formData,
+			body: JSON.stringify({
+				orderDetails: this.props.cartItemsAndSkus,
+				name: this.state.name,
+				email: this.state.email,
+				address: this.state.address,
+			}),
 		});
+
+		if (resp.ok) {
+			console.log(resp);
+		}
 	};
 
 	render() {

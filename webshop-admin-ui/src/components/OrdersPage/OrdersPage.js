@@ -16,7 +16,7 @@ class OrdersPage extends Component {
 
 			this.setState({
 				...this.state,
-				orders: newOrders,
+				orders: newOrders ? newOrders.ordersData : [],
 			});
 		}
 	}
@@ -48,7 +48,7 @@ class OrdersPage extends Component {
 										key={`row_${idx}`}
 										className="text-center"
 									>
-										<td>{order.orderId}</td>
+										<td>{order.order_id}</td>
 										<td>{order.name}</td>
 										<td>{order.email}</td>
 										<td>{order.address}</td>

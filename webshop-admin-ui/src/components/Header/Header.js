@@ -32,6 +32,14 @@ export default class Header extends Component {
 						Product Upload
 					</NavLink>
 					{/* --- */}
+					<NavLink
+						className="nav-link"
+						exact
+						activeClassName="selected"
+						to="/orders"
+					>
+						Orders
+					</NavLink>
 				</Navbar.Collapse>
 			</Navbar>
 		);

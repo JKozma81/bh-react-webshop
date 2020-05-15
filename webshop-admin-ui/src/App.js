@@ -9,6 +9,7 @@ import { Container } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getProductsAndImages } from './actions/Actions';
 import ProductUpdate from './components/ProductUpdate/ProductUpdate';
+import OrdersPage from './components/OrdersPage/OrdersPage';
 
 class App extends Component {
 	async componentDidMount() {
@@ -36,6 +37,9 @@ class App extends Component {
 									<ProductUpdate {...routProps} />
 								)}
 							/>
+							<Route path="/orders">
+								<OrdersPage />
+							</Route>
 							<Route path="/">
 								<Dashboard />
 							</Route>

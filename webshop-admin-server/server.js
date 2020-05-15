@@ -67,13 +67,13 @@ app.get(
 	})
 );
 
-// app.post(
-// 	'/orders',
-// 	OrdersController.addOrder({
-// 		productService,
-// 		ordersService,
-// 	})
-// );
+app.post(
+	'/orders',
+	OrdersController.addOrder({
+		productService,
+		ordersService,
+	})
+);
 
 app.put(
 	'/products/:sku',

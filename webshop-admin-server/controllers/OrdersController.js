@@ -8,8 +8,21 @@ class OrdersController {
 				orderedItems.orderId = Number(
 					Date.now().toString() + Math.floor(Math.random() * 100 + 1)
 				);
+
+				const productsInStock = await productService.getAllProducts();
+
 				const purchessedProducts = orderedItems.orderDetails.map(
-					(item) => ({ productSKU: item.sku, qty: item.qty })
+					(item) => {
+						const orderedInStock = productsInStock.find(
+							(product) => product.sku === item.sku
+						);
+						return {
+							productSKU: item.sku,
+							modifiedData: {
+								qty: orderedInStock.qty - item.qty,
+							},
+						};
+					}
 				);
 
 				for (const product of purchessedProducts) {
@@ -18,8 +31,8 @@ class OrdersController {
 
 				await ordersService.addOrder(orderedItems);
 
-				const productsInStock = await productService.getAllProducts();
-				res.json({ productsInStock });
+				const productsRemaining = await productService.getAllProducts();
+				res.json({ productsRemaining });
 			} catch (err) {
 				console.error('Application error:', err.message);
 				res.json(err);
