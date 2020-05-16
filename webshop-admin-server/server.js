@@ -28,7 +28,7 @@ const imageService = new ImageService(imageRepository);
 const ordersService = new OrdersService(ordersRepository);
 const promotionsService = new PromotionsService(promotionsRepository);
 const recommendationsService = new RecommendationsService(
-	recommendedRepository
+  recommendedRepository
 );
 const skuService = new SKUService();
 
@@ -42,84 +42,91 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.use(cors());
 
 app.get(
-	'/products',
-	ProductController.getProductsAndImages({
-		productService,
-		imageService,
-		promotionsService,
-		recommendationsService,
-	})
+  '/products',
+  ProductController.getProductsAndImages({
+    productService,
+    imageService,
+    promotionsService,
+    recommendationsService,
+  })
 );
 
 app.post(
-	'/product',
-	ProductController.addProduct({
-		productService,
-		skuService,
-		imageService,
-	})
+  '/product',
+  ProductController.addProduct({
+    productService,
+    skuService,
+    imageService,
+  })
 );
 
 app.get(
-	'/orders',
-	OrdersController.getOrders({
-		ordersService,
-	})
+  '/orders',
+  OrdersController.getOrders({
+    ordersService,
+  })
 );
 
 app.post(
-	'/orders',
-	OrdersController.addOrder({
-		productService,
-		ordersService,
-	})
+  '/orders',
+  OrdersController.addOrder({
+    productService,
+    ordersService,
+  })
 );
 
 app.put(
-	'/products/:sku',
-	ProductController.modifyProduct({
-		productService,
-	})
+  '/products/:sku',
+  ProductController.modifyProduct({
+    productService,
+  })
 );
 
 app.delete(
-	'/product/:sku',
-	ProductController.deleteProduct({
-		imageService,
-		productService,
-	})
+  '/product/:sku',
+  ProductController.deleteProduct({
+    imageService,
+    productService,
+  })
 );
 
 app.get(
-	'/products/:sku/files',
-	ProductController.getProductBySKU({
-		productService,
-		imageService,
-		skuService,
-	})
+  '/products/:sku/files',
+  ProductController.getProductBySKU({
+    productService,
+    imageService,
+    skuService,
+  })
 );
 
 app.post(
-	'/products/:sku/files',
-	ProductController.uploadNewPictures({
-		imageService,
-	})
+  '/products/:sku/files',
+  ProductController.uploadNewPictures({
+    imageService,
+  })
+);
+
+app.post(
+  '/products/promotions',
+  ProductController.uploadPromotions({
+    promotionsService,
+  })
 );
 
 app.put(
-	'/files/:id',
-	ProductController.modifyPrimaryPicture({
-		imageService,
-	})
+  '/files/:id',
+  ProductController.modifyPrimaryPicture({
+    imageService,
+  })
 );
 
 app.delete(
-	'/files/:id',
-	ProductController.deleteImageFromDB({
-		imageService,
-	})
+  '/files/:id',
+  ProductController.deleteImageFromDB({
+    imageService,
+  })
 );
 
 app.listen(port, () =>
-	console.log(`App is started and listening at http://localhost:${port}`)
+  console.log(`App is started and listening at http://localhost:${port}`)
 );
