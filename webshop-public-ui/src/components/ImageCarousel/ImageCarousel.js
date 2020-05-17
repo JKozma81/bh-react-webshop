@@ -5,7 +5,7 @@ import classes from './ImageCarousel.module.css';
 class ImageCarousel extends Component {
   state = {
     images: [...this.props.images],
-    active: 1,
+    active: 5,
     size: 100,
   };
 
@@ -33,9 +33,9 @@ class ImageCarousel extends Component {
   };
 
   handleTransition = () => {
-    if (this.imageRefs[this.state.active].current.id === 'lastitem') {
+    if (this.imageRefs[this.state.active - 1].current.id === 'lastitem') {
       this.slide.current.style.transition = 'none';
-      this.setState({ ...this.state, active: this.imageRefs.length - 2 });
+      this.setState({ ...this.state, active: 5 });
       this.slide.current.style.transform = `translateX(${
         -this.state.size * this.state.active
       }px)`;
@@ -45,7 +45,7 @@ class ImageCarousel extends Component {
       this.slide.current.style.transition = 'none';
       this.setState((prevState) => ({
         ...prevState,
-        active: 0,
+        active: 4,
       }));
       this.slide.current.style.transform = `translateX(${
         -this.state.size * this.state.active
@@ -56,6 +56,10 @@ class ImageCarousel extends Component {
   render() {
     const carouselImages = [
       this.state.images[this.state.images.length - 1],
+      this.state.images[this.state.images.length - 4],
+      this.state.images[this.state.images.length - 3],
+      this.state.images[this.state.images.length - 2],
+      this.state.images[this.state.images.length - 1],
       ...this.state.images,
       this.state.images[0],
       this.state.images[1],
@@ -65,7 +69,7 @@ class ImageCarousel extends Component {
     carouselImages.forEach((img) => {
       if (
         !this.imageRefs.length ||
-        this.imageRefs.length < this.state.images.length + 4
+        this.imageRefs.length < this.state.images.length + 8
       )
         this.imageRefs.push(React.createRef());
     });
