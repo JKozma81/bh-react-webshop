@@ -1,3 +1,7 @@
 .Products {
-	min-height: 500px;
+  min-height: 500px;
+}
+
+.Card {
+  min-height: 425px;
 }

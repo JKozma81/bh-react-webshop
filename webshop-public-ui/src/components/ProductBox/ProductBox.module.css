@@ -1,20 +1,20 @@
 .Product-link {
-	text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 .Product-link:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .Box {
-	box-shadow: 5px 5px 25px black;
+  box-shadow: 5px 5px 25px black;
 }
 
 .Card-image-container {
-	height: 220px;
+  height: 385px;
 }
 
 .Card-image {
-	max-width: 100%;
-	max-height: 200px;
+  /* max-width: 100%; */
+  max-height: 350px;
 }

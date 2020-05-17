@@ -9,32 +9,52 @@ import classes from './ProductDetail.module.css';
 
 class ProductDetail extends Component {
   state = {
-    product: {},
+    // product: {},
+    // images: [],
   };
+
   async componentDidMount() {
     const productSKU = this.props.productId;
+
+    const productImages = this.props.images.filter(
+      (image) => image.product_sku === productSKU
+    );
+    const product = this.props.products.find((item) => item.sku === productSKU);
+
     this.setState((prevState) => ({
       ...prevState,
-      product: this.props.products.find((item) => item.sku === productSKU),
+      product,
+      images: productImages,
     }));
   }
 
   render() {
     return (
-      <Container className={`mt-5 ${classes['Product-detail']}`}>
+      <Container fluid className={`mt-5 ${classes['Product-detail']} p-5`}>
         <Row>
           <Col md={6} className="border">
-            {/* <ImageCarousel images={images} /> */}
+            {this.state.images && (
+              <ImageCarousel
+                images={this.state.images}
+                productSKU={
+                  Object.keys(this.state.product).length
+                    ? this.state.product.sku
+                    : ''
+                }
+              />
+            )}
           </Col>
           <Col md={6} className="p-3 border">
-            <ProductInfo {...this.state.product} />
+            {this.state.product && <ProductInfo {...this.state.product} />}
           </Col>
         </Row>
         <Row>
           <Col className="height-300 border p-3">
-            <ProductSpec
-              params={this.state.product ? this.state.product.specs : ''}
-            />
+            {this.state.product && (
+              <ProductSpec
+                params={this.state.product ? this.state.product.specs : ''}
+              />
+            )}
           </Col>
         </Row>
         <Row>
@@ -48,6 +68,7 @@ class ProductDetail extends Component {
 function mapStateToProps(state) {
   return {
     products: state.products,
+    images: state.images,
   };
 }
 

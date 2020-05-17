@@ -1,61 +1,112 @@
 import React, { Component } from 'react';
 import { Button, Row, Image, Container } from 'react-bootstrap';
+import classes from './ImageCarousel.module.css';
 
-export default class ImageCarousel extends Component {
+class ImageCarousel extends Component {
   state = {
-    // images: [...this.props.images],
-    images: [],
+    images: [...this.props.images],
     active: 1,
+    size: 100,
   };
 
-  handleInc = () => {
-    const index = this.state.active;
-    if (index + 1 > this.state.images.length) return;
-    this.setState({ active: index + 1 });
+  imageRefs = [];
+  slide = React.createRef();
+
+  handleNextClick = () => {
+    let counter = this.state.active;
+    if (counter >= this.imageRefs.length - 1) return;
+    this.slide.current.style.transition = 'transform 0.2s ease-in-out';
+    counter++;
+    this.setState((prevState) => ({ ...prevState, active: counter }));
+    this.slide.current.style.transform =
+      'translateX(' + -this.state.size * counter + 'px)';
   };
 
-  handleDec = () => {
-    const index = this.state.active;
-    if (index - 1 <= 0) return;
-    this.setState(() => ({
-      active: index - 1,
-    }));
+  handlePrevClick = () => {
+    let counter = this.state.active;
+    if (counter <= 0) return;
+    this.slide.current.style.transition = 'transform 0.2s ease-in-out';
+    counter--;
+    this.setState((prevState) => ({ ...prevState, active: counter }));
+    this.slide.current.style.transform =
+      'translateX(' + -this.state.size * counter + 'px)';
   };
 
-  handleClick = (index) => {
-    this.setState(() => ({ active: index }));
+  handleTransition = () => {
+    if (this.imageRefs[this.state.active].current.id === 'lastitem') {
+      this.slide.current.style.transition = 'none';
+      this.setState({ ...this.state, active: this.imageRefs.length - 2 });
+      this.slide.current.style.transform = `translateX(${
+        -this.state.size * this.state.active
+      }px)`;
+    }
+
+    if (this.imageRefs[this.state.active + 3].current.id === 'firstitem') {
+      this.slide.current.style.transition = 'none';
+      this.setState((prevState) => ({
+        ...prevState,
+        active: 0,
+      }));
+      this.slide.current.style.transform = `translateX(${
+        -this.state.size * this.state.active
+      }px)`;
+    }
   };
 
   render() {
+    const carouselImages = [
+      this.state.images[this.state.images.length - 1],
+      ...this.state.images,
+      this.state.images[0],
+      this.state.images[1],
+      this.state.images[2],
+    ];
+
+    carouselImages.forEach((img) => {
+      if (
+        !this.imageRefs.length ||
+        this.imageRefs.length < this.state.images.length + 4
+      )
+        this.imageRefs.push(React.createRef());
+    });
+
     return (
-      <Container className="p-3">
-        <Row>
-          <img
-            src={this.state.images[this.state.active - 1].url}
-            alt="product"
-            className="big-img mr-auto ml-auto"
-          />
-        </Row>
-        <Row>
-          <Button className="ml-auto" onClick={this.handleDec}>
-            &#8656;
-          </Button>{' '}
-          {this.state.images.map((image, idx) => (
-            <Image
-              onClick={() => {
-                this.handleClick(idx + 1);
-              }}
-              className="tiny-img mr-2 ml-2"
-              key={`img_${idx}`}
-              src={image.url}
-              thumbnail
-            />
-          ))}
-          <Button className="mr-auto" onClick={this.handleInc}>
-            &#8658;
-          </Button>
-        </Row>
-      </Container>
+      <div>
+        <Button onClick={this.handlePrevClick}>Prev</Button>
+        <div className={classes['slide-control']}>
+          <div
+            className={classes['slider']}
+            ref={this.slide}
+            style={{
+              transform: `translateX(${
+                -this.state.size * this.state.active
+              }px)`,
+            }}
+            onTransitionEnd={this.handleTransition}
+          >
+            {carouselImages.map((image, idx) => {
+              return (
+                <div
+                  id={
+                    idx === 0
+                      ? 'lastitem'
+                      : idx === carouselImages.length - 1
+                      ? 'firstitem'
+                      : ''
+                  }
+                  key={`pic${idx}`}
+                  className={classes['slider-controll-pic']}
+                  style={{ backgroundImage: `url(${image.url})` }}
+                  ref={this.imageRefs[idx]}
+                ></div>
+              );
+            })}
+          </div>
+        </div>
+        <Button onClick={this.handleNextClick}>Next</Button>
+      </div>
     );
   }
 }
+
+export default ImageCarousel;
