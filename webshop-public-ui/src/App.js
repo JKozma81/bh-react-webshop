@@ -11,6 +11,7 @@ import Footer from './components/Footer/Footer';
 import CartPage from './components/CartPage/CartPage';
 import CheckoutPage from './components/CheckoutPage/CheckoutPage';
 import { getItemsFromServer } from './actions/Actions';
+import PromoCarousel from './components/PromoCarousel/PromoCarousel';
 
 class App extends Component {
   state = {
@@ -30,6 +31,7 @@ class App extends Component {
     if (dataStream.ok) {
       const productsAndImages = await dataStream.json();
       this.props.getItems(productsAndImages);
+      console.log(productsAndImages);
     }
   }
 
@@ -44,7 +46,7 @@ class App extends Component {
           <Row className="Main-content">
             <Switch>
               <Route exact path="/">
-                <Container>Offerings</Container>
+                <PromoCarousel />
                 <Products />
               </Route>
               <Route exact path="/cart">

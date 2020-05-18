@@ -155,6 +155,8 @@ export default function RootReducer(state = InitialState, action) {
         ...state,
         products: action.items.productsData,
         images: action.items.imageData,
+        promotions: action.items.promotions,
+        recommendations: action.items.recommendations,
       };
     }
 
