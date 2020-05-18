@@ -24,17 +24,18 @@ class Products extends Component {
 }
 
 function mapStateToProps(state) {
+  const products = state.products.map((item) => {
+    const primaryPicture = state.images.find(
+      (picture) => picture.product_sku === item.sku && picture.is_primary === 1
+    );
+    return {
+      ...item,
+      picture: primaryPicture ? primaryPicture : { url: '' },
+    };
+  });
+
   return {
-    products: state.products.map((item) => {
-      const primaryPicture = state.images.find(
-        (picture) =>
-          picture.product_sku === item.sku && picture.is_primary === 1
-      );
-      return {
-        ...item,
-        picture: primaryPicture ? primaryPicture : { url: '' },
-      };
-    }),
+    products,
   };
 }
 

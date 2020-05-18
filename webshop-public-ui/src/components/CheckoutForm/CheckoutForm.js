@@ -47,7 +47,9 @@ class CheckoutForm extends Component {
 
     if (resp.ok) {
       const remainingProducts = await resp.json();
-      console.log(resp);
+
+      this.props.emptyCart();
+      this.props.updateProducts(remainingProducts.productsRemaining);
       this.setState({
         ...this.state,
         name: '',
@@ -56,8 +58,6 @@ class CheckoutForm extends Component {
         cartError: '',
         submitted: true,
       });
-      this.props.emptyCart();
-      this.props.updateProducts(remainingProducts.productsRemaining);
     }
   };
 
@@ -123,7 +123,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     emptyCart: () => dispatch(emptyCart()),
-    updateProducts: () => dispatch(updateStock()),
+    updateProducts: (items) => dispatch(updateStock(items)),
   };
 }
 
