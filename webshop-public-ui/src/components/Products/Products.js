@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Col, CardDeck, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import classes from './Products.module.css';
 import { connect } from 'react-redux';
 
@@ -10,7 +10,7 @@ class Products extends Component {
 
   render() {
     return (
-      <Container fluid className={`${classes.Products} p-5`}>
+      <Container fluid className={`${classes.Products} pl-5 pr-5 pb-5`}>
         <Row xs={5}>
           {this.props.products.map((product, idx) => (
             <Col key={`prod_${idx}`} className={`p-3 ${classes['Card']}`}>
@@ -32,7 +32,7 @@ function mapStateToProps(state) {
       );
       return {
         ...item,
-        picture: primaryPicture,
+        picture: primaryPicture ? primaryPicture : { url: '' },
       };
     }),
   };

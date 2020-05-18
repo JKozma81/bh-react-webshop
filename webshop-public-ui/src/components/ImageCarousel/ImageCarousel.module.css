@@ -1,22 +1,25 @@
 .slide-control {
-  margin: 20px auto;
   width: 300px;
+  margin-left: 15px;
+  margin-right: 15px;
   height: 100px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .slider {
   display: flex;
   flex-direction: row;
-  border: 1px solid black;
 }
 
 .picture-display {
   width: 500px;
   height: 350px;
-  border: 1px solid black;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .slider-controll-pic {
@@ -24,9 +27,29 @@
   margin-right: 5px;
   height: 90px;
   min-width: 90px;
-  flex: none;
   background-position: center;
   background-repeat: no-repeat;
-  border: 1px solid red;
+  border: 1px solid #5e8e3d;
   background-size: cover;
+}
+
+.slider-controll-pic:hover {
+  cursor: pointer;
+  border: 1px solid #95bf45;
+}
+
+.arrow {
+  height: 100px;
+  width: 75px;
+  font-size: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #5e8e3d;
+}
+
+.arrow span:hover {
+  cursor: pointer;
+  color: #95bf45;
 }

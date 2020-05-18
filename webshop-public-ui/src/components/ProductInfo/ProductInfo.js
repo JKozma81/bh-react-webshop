@@ -21,16 +21,33 @@ class ProductInfo extends Component {
           <p>{this.props.desc}</p>
         </Row>
         <Row className="justify-content-end" style={{ minHeight: '40px' }}>
-          <Button
-            variant="primary"
-            onClick={() => this.props.addItemToCart(this.props.sku)}
-          >
-            Add to cart
-          </Button>
+          {this.props.qty > 0 && (
+            <Button
+              variant="primary"
+              onClick={() => this.props.addItemToCart(this.props.sku)}
+            >
+              Add to cart
+            </Button>
+          )}
+          {this.props.qty === 0 && (
+            <span style={{ color: 'red', fontWeight: 'bold' }}>
+              Out of stock
+            </span>
+          )}
         </Row>
       </Container>
     );
   }
+}
+
+function mapStateToProps(state, ownProps) {
+  const productSku = ownProps.productSKU;
+
+  const product = state.products.find((prod) => prod.sku === productSku);
+
+  return {
+    ...product,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -39,4 +56,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(ProductInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductInfo);

@@ -14,12 +14,16 @@ export default class ProductBox extends Component {
           <Link to={`/products/${this.props.product.sku}`}>
             <Card.Img
               variant="bottom"
-              src={this.props.product.picture.url}
+              src={
+                this.props.product
+                  ? this.props.product.picture.url
+                  : '/assets/images/no-image-found.png'
+              }
               className={classes['Card-image']}
             />
           </Link>
         </Container>
-        <Card.Body className="p-2 h-25">
+        <Card.Body className="p-3 h-25">
           <Card.Text className="d-flex flex-row justify-content-between">
             <Link
               to={`/products/${this.props.product.sku}`}
@@ -28,7 +32,9 @@ export default class ProductBox extends Component {
               {this.props.product.name}
             </Link>
             <span>{this.props.product.sku}</span>
-            <span>{this.props.product.price}</span>
+            <span>
+              <strong>{this.props.product.price} &#8364;</strong>{' '}
+            </span>
           </Card.Text>
         </Card.Body>
         <Card.Footer className="d-flex flex-row justify-content-between align-items-center">

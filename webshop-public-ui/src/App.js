@@ -31,7 +31,6 @@ class App extends Component {
     if (dataStream.ok) {
       const productsAndImages = await dataStream.json();
       this.props.getItems(productsAndImages);
-      console.log(productsAndImages);
     }
   }
 

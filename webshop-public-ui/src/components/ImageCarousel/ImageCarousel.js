@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Row, Image, Container } from 'react-bootstrap';
+import { Row, Container, Col } from 'react-bootstrap';
 import classes from './ImageCarousel.module.css';
+import { connect } from 'react-redux';
 
 class ImageCarousel extends Component {
   state = {
-    images: [...this.props.images],
     active: this.props.images.length + 1,
     size: 100,
+    defaultImg: this.props.defaultImg,
   };
 
   imageRefs = [];
@@ -56,59 +57,123 @@ class ImageCarousel extends Component {
     }
   };
 
+  handleSelectPic = (evt) => {
+    const selectedPic = evt.target.style.backgroundImage;
+    const url = selectedPic.split('"')[1];
+    this.setState((prevState) => ({ ...prevState, defaultImg: url }));
+  };
+
   render() {
     const carouselImages = [
-      this.state.images[this.state.images.length - 1],
-      ...this.state.images,
-      ...this.state.images,
-      ...this.state.images.slice(0, this.state.images.length - 1),
+      this.props.images[this.props.images.length - 1],
+      ...this.props.images,
+      ...this.props.images,
+      ...this.props.images.slice(0, this.props.images.length - 1),
     ];
 
     carouselImages.forEach((img) => {
       if (
         !this.imageRefs.length ||
-        this.imageRefs.length < this.state.images.length * 3
+        this.imageRefs.length < this.props.images.length * 3
       )
         this.imageRefs.push(React.createRef());
     });
 
     return (
-      <div>
-        <Button onClick={this.handlePrevClick}>Prev</Button>
-        <div className={classes['slide-control']}>
-          <div
-            className={classes['slider']}
-            ref={this.slide}
-            style={{
-              transform: `translateX(${
-                -this.state.size * this.state.active
-              }px)`,
-            }}
-            onTransitionEnd={this.handleTransition}
-          >
-            {carouselImages.map((image, idx) => {
-              return (
+      <Container fluid>
+        <Row className="justify-content-center align-items-center">
+          <Container
+            className={classes['picture-display']}
+            style={{ backgroundImage: `url(${this.state.defaultImg})` }}
+          ></Container>
+        </Row>
+        <Row className="justify-content-center align-items-center mt-2 mb-2">
+          {this.props.images.length > 3 && (
+            <>
+              <div className={classes['arrow']} onClick={this.handlePrevClick}>
+                <span>&#8678;</span>
+              </div>
+
+              <Row className={classes['slide-control']}>
                 <div
-                  id={
-                    idx === 0
-                      ? 'lastitem'
-                      : idx === carouselImages.length - 1
-                      ? 'firstitem'
-                      : ''
-                  }
-                  key={`pic${idx}`}
+                  className={classes['slider']}
+                  ref={this.slide}
+                  style={{
+                    transform: `translateX(${
+                      -this.state.size * this.state.active
+                    }px)`,
+                  }}
+                  onTransitionEnd={this.handleTransition}
+                >
+                  {carouselImages.map((image, idx) => {
+                    return (
+                      <div
+                        id={
+                          idx === 0
+                            ? 'lastitem'
+                            : idx === carouselImages.length - 1
+                            ? 'firstitem'
+                            : ''
+                        }
+                        key={`pic${idx}`}
+                        className={classes['slider-controll-pic']}
+                        style={{
+                          backgroundImage: `url(${image ? image.url : ''})`,
+                        }}
+                        ref={this.imageRefs[idx]}
+                        onClick={this.handleSelectPic}
+                      ></div>
+                    );
+                  })}
+                </div>
+              </Row>
+
+              <div className={classes['arrow']} onClick={this.handleNextClick}>
+                <span>&#8680;</span>
+              </div>
+            </>
+          )}
+
+          {this.props.images.length <= 3 && (
+            <Row className="d-flex flex-row justify-content-center align-items-center">
+              {this.props.images.map((image, idx) => (
+                <Col
+                  key={`pic_${idx}`}
                   className={classes['slider-controll-pic']}
-                  style={{ backgroundImage: `url(${image.url})` }}
-                  ref={this.imageRefs[idx]}
-                ></div>
-              );
-            })}
-          </div>
-        </div>
-        <Button onClick={this.handleNextClick}>Next</Button>
-      </div>
+                  style={{
+                    backgroundImage: `url(${image ? image.url : ''})`,
+                  }}
+                  onClick={this.handleSelectPic}
+                ></Col>
+              ))}
+            </Row>
+          )}
+        </Row>
+      </Container>
     );
   }
 }
 
-export default ImageCarousel;
+function mapStateToProps(state, ownProps) {
+  const productSku = ownProps.productSKU;
+  const productImages = state.images.filter(
+    (image) => image.product_sku === productSku
+  );
+
+  let defaultImg;
+
+  if (productImages.length) {
+    defaultImg = productImages.find((image) => image.is_primary === 1);
+  }
+
+  return {
+    images: productImages
+      ? productImages
+      : [{ url: '/assets/images/no-image-found.png' }],
+    defaultImg: defaultImg
+      ? defaultImg.url
+      : '/assets/images/no-image-found.png',
+  };
+}
+
+export default connect(mapStateToProps)(ImageCarousel);

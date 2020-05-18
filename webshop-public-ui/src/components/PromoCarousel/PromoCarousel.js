@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import classes from './PromoCarouse.module.css';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class PromoCarousel extends Component {
   state = {
@@ -88,13 +89,15 @@ class PromoCarousel extends Component {
                     }}
                     ref={this.promoRefs[idx]}
                   >
-                    <h1>{promo ? promo.promo_text : ''}</h1>
-                    <a
-                      href={`${promo ? '/products/' + promo.product_sku : ''}`}
+                    <h1 className={classes['promo-slogen']}>
+                      {promo ? promo.promo_text : ''}
+                    </h1>
+                    <Link
+                      to={`/products/${promo ? promo.product_sku : ''}`}
                       className={classes['promo-link']}
                     >
                       See details
-                    </a>
+                    </Link>
                   </div>
                 );
               })}
@@ -123,7 +126,6 @@ class PromoCarousel extends Component {
 }
 
 function mapStaeToProps(state) {
-  console.log(state);
   return {
     promotions: state.promotions,
   };
