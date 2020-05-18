@@ -1,61 +1,60 @@
 class OrdersController {
-	static addOrder(options) {
-		const ordersService = options.ordersService;
-		const productService = options.productService;
-		return async (req, res) => {
-			try {
-				const orderedItems = req.body;
-				orderedItems.orderId = Number(
-					Date.now().toString() + Math.floor(Math.random() * 100 + 1)
-				);
+  static addOrder(options) {
+    const ordersService = options.ordersService;
+    const productService = options.productService;
+    return async (req, res) => {
+      try {
+        const orderedItems = req.body;
 
-				const productsInStock = await productService.getAllProducts();
+        orderedItems.orderId = Number(
+          Date.now().toString() + Math.floor(Math.random() * 100 + 1)
+        );
 
-				const purchessedProducts = orderedItems.orderDetails.map(
-					(item) => {
-						const orderedInStock = productsInStock.find(
-							(product) => product.sku === item.sku
-						);
-						return {
-							productSKU: item.sku,
-							modifiedData: {
-								qty: orderedInStock.qty - item.qty,
-							},
-						};
-					}
-				);
+        const productsInStock = await productService.getAllProducts();
 
-				for (const product of purchessedProducts) {
-					await productService.modifyProductData(product);
-				}
+        const purchessedProducts = orderedItems.orderDetails.map((item) => {
+          const orderedInStock = productsInStock.find(
+            (product) => product.sku === item.sku
+          );
+          return {
+            productSKU: item.sku,
+            modifiedData: {
+              qty: orderedInStock.qty - item.qty,
+            },
+          };
+        });
 
-				await ordersService.addOrder(orderedItems);
+        for (const product of purchessedProducts) {
+          await productService.modifyProductData(product);
+        }
+        console.log(orderedItems);
+        await ordersService.addOrder(orderedItems);
 
-				const productsRemaining = await productService.getAllProducts();
-				res.json({ productsRemaining });
-			} catch (err) {
-				console.error('Application error:', err.message);
-				res.json(err);
-			}
-		};
-	}
+        const productsRemaining = await productService.getAllProducts();
+        res.json({ productsRemaining });
+      } catch (err) {
+        console.error('Application error:', err.message);
+        res.json(err);
+      }
+    };
+  }
 
-	static getOrders(options) {
-		const ordersService = options.ordersService;
+  static getOrders(options) {
+    const ordersService = options.ordersService;
 
-		return async (req, res) => {
-			try {
-				const ordersData = await ordersService.getAllOrders();
+    return async (req, res) => {
+      try {
+        const ordersData = await ordersService.getAllOrders();
 
-				res.json({
-					ordersData,
-				});
-			} catch (err) {
-				console.error(err.message);
-				res.json(err);
-			}
-		};
-	}
+        res.json({
+          ordersData,
+        });
+      } catch (err) {
+        console.error(err.message);
+        res.json(err);
+      }
+    };
+  }
 }
 
 module.exports = OrdersController;
