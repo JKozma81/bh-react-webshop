@@ -27,7 +27,7 @@ class OrdersController {
         for (const product of purchessedProducts) {
           await productService.modifyProductData(product);
         }
-        console.log(orderedItems);
+
         await ordersService.addOrder(orderedItems);
 
         const productsRemaining = await productService.getAllProducts();

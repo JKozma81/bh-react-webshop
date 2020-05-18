@@ -8,7 +8,7 @@ class OrdersRepository {
       try {
         this.dataBase.serialize(() => {
           this.dataBase.all(
-            'SELECT DISTINCT order_id, GROUP_CONCAT(product_sku, ", ") AS products, name, email, address FROM orders GROUP BY product_sku',
+            'SELECT DISTINCT order_id, GROUP_CONCAT(product_sku, ", ") AS products, name, email, address FROM orders',
             (err, results) => {
               if (err !== null)
                 reject({
@@ -41,9 +41,7 @@ class OrdersRepository {
     return new Promise((resolve, reject) => {
       try {
         this.dataBase.serialize(() => {
-          console.log('order', orderData);
           for (const orderItem of orderData.orderDetails) {
-            console.log('for', orderItem);
             this.dataBase.run(
               'INSERT INTO orders(order_id, name, email, address, product_sku, qty) VALUES(?, ?, ?, ?, ?, ?)',
               [
