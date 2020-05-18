@@ -1,61 +1,179 @@
 import React, { Component } from 'react';
-import { Button, Row, Image, Container } from 'react-bootstrap';
+import { Row, Container, Col } from 'react-bootstrap';
+import classes from './ImageCarousel.module.css';
+import { connect } from 'react-redux';
 
-export default class ImageCarousel extends Component {
+class ImageCarousel extends Component {
   state = {
-    // images: [...this.props.images],
-    images: [],
-    active: 1,
+    active: this.props.images.length + 1,
+    size: 100,
+    defaultImg: this.props.defaultImg,
   };
 
-  handleInc = () => {
-    const index = this.state.active;
-    if (index + 1 > this.state.images.length) return;
-    this.setState({ active: index + 1 });
+  imageRefs = [];
+  slide = React.createRef();
+
+  handleNextClick = () => {
+    let counter = this.state.active;
+    if (counter >= this.imageRefs.length - 1) return;
+    this.slide.current.style.transition = 'transform 0.2s ease-in-out';
+    counter++;
+    this.setState((prevState) => ({ ...prevState, active: counter }));
+    this.slide.current.style.transform =
+      'translateX(' + -this.state.size * counter + 'px)';
   };
 
-  handleDec = () => {
-    const index = this.state.active;
-    if (index - 1 <= 0) return;
-    this.setState(() => ({
-      active: index - 1,
-    }));
+  handlePrevClick = () => {
+    let counter = this.state.active;
+    if (counter <= 0) return;
+    this.slide.current.style.transition = 'transform 0.2s ease-in-out';
+    counter--;
+    this.setState((prevState) => ({ ...prevState, active: counter }));
+    this.slide.current.style.transform =
+      'translateX(' + -this.state.size * counter + 'px)';
   };
 
-  handleClick = (index) => {
-    this.setState(() => ({ active: index }));
+  handleTransition = () => {
+    if (this.imageRefs[this.state.active - 1].current.id === 'lastitem') {
+      this.slide.current.style.transition = 'none';
+      this.setState({ ...this.state, active: this.props.images.length + 1 });
+      this.slide.current.style.transform = `translateX(${
+        -this.state.size * this.state.active
+      }px)`;
+    }
+
+    if (
+      this.imageRefs[this.state.active + this.props.images.length - 1].current
+        .id === 'firstitem'
+    ) {
+      this.slide.current.style.transition = 'none';
+      this.setState((prevState) => ({
+        ...prevState,
+        active: this.props.images.length,
+      }));
+      this.slide.current.style.transform = `translateX(${
+        -this.state.size * this.state.active
+      }px)`;
+    }
+  };
+
+  handleSelectPic = (evt) => {
+    const selectedPic = evt.target.style.backgroundImage;
+    const url = selectedPic.split('"')[1];
+    this.setState((prevState) => ({ ...prevState, defaultImg: url }));
   };
 
   render() {
+    const carouselImages = [
+      this.props.images[this.props.images.length - 1],
+      ...this.props.images,
+      ...this.props.images,
+      ...this.props.images.slice(0, this.props.images.length - 1),
+    ];
+
+    carouselImages.forEach((img) => {
+      if (
+        !this.imageRefs.length ||
+        this.imageRefs.length < this.props.images.length * 3
+      )
+        this.imageRefs.push(React.createRef());
+    });
+
     return (
-      <Container className="p-3">
-        <Row>
-          <img
-            src={this.state.images[this.state.active - 1].url}
-            alt="product"
-            className="big-img mr-auto ml-auto"
-          />
+      <Container fluid>
+        <Row className="justify-content-center align-items-center">
+          <Container
+            className={classes['picture-display']}
+            style={{ backgroundImage: `url(${this.state.defaultImg})` }}
+          ></Container>
         </Row>
-        <Row>
-          <Button className="ml-auto" onClick={this.handleDec}>
-            &#8656;
-          </Button>{' '}
-          {this.state.images.map((image, idx) => (
-            <Image
-              onClick={() => {
-                this.handleClick(idx + 1);
-              }}
-              className="tiny-img mr-2 ml-2"
-              key={`img_${idx}`}
-              src={image.url}
-              thumbnail
-            />
-          ))}
-          <Button className="mr-auto" onClick={this.handleInc}>
-            &#8658;
-          </Button>
+        <Row className="justify-content-center align-items-center mt-2 mb-2">
+          {this.props.images.length > 3 && (
+            <>
+              <div className={classes['arrow']} onClick={this.handlePrevClick}>
+                <span>&#8678;</span>
+              </div>
+
+              <Row className={classes['slide-control']}>
+                <div
+                  className={classes['slider']}
+                  ref={this.slide}
+                  style={{
+                    transform: `translateX(${
+                      -this.state.size * this.state.active
+                    }px)`,
+                  }}
+                  onTransitionEnd={this.handleTransition}
+                >
+                  {carouselImages.map((image, idx) => {
+                    return (
+                      <div
+                        id={
+                          idx === 0
+                            ? 'lastitem'
+                            : idx === carouselImages.length - 1
+                            ? 'firstitem'
+                            : ''
+                        }
+                        key={`pic${idx}`}
+                        className={classes['slider-controll-pic']}
+                        style={{
+                          backgroundImage: `url(${image ? image.url : ''})`,
+                        }}
+                        ref={this.imageRefs[idx]}
+                        onClick={this.handleSelectPic}
+                      ></div>
+                    );
+                  })}
+                </div>
+              </Row>
+
+              <div className={classes['arrow']} onClick={this.handleNextClick}>
+                <span>&#8680;</span>
+              </div>
+            </>
+          )}
+
+          {this.props.images.length <= 3 && (
+            <Row className="d-flex flex-row justify-content-center align-items-center">
+              {this.props.images.map((image, idx) => (
+                <Col
+                  key={`pic_${idx}`}
+                  className={classes['slider-controll-pic']}
+                  style={{
+                    backgroundImage: `url(${image ? image.url : ''})`,
+                  }}
+                  onClick={this.handleSelectPic}
+                ></Col>
+              ))}
+            </Row>
+          )}
         </Row>
       </Container>
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  const productSku = ownProps.productSKU;
+  const productImages = state.images.filter(
+    (image) => image.product_sku === productSku
+  );
+
+  let defaultImg;
+
+  if (productImages.length) {
+    defaultImg = productImages.find((image) => image.is_primary === 1);
+  }
+
+  return {
+    images: productImages
+      ? productImages
+      : [{ url: '/assets/images/no-image-found.png' }],
+    defaultImg: defaultImg
+      ? defaultImg.url
+      : '/assets/images/no-image-found.png',
+  };
+}
+
+export default connect(mapStateToProps)(ImageCarousel);

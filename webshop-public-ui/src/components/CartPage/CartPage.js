@@ -15,16 +15,22 @@ class CartPage extends Component {
           )
         : 0;
     return (
-      <Container className="mt-5 text-center p-3">
+      <Container
+        className="mt-5 text-center p-3"
+        style={{ minHeight: '719px' }}
+      >
         <h1>Your cart</h1>
-        <Row className="justify-content-center align-items-center">
-          {this.props.cart.map((item, idx) => (
-            <CartItem key={`item_${idx}`} {...item} />
-          ))}
-        </Row>
-        <Row className="text-right">
+        {this.props.cart.map((item, idx) => (
+          <Row
+            className="justify-content-center align-items-center mt-3 mb-3 border p-3"
+            key={`item_${idx}`}
+          >
+            <CartItem {...item} />
+          </Row>
+        ))}
+        <Row className="justify-content-end">
           <p>
-            <strong>Total price: {totalPrice}</strong>
+            <strong>Total price: {totalPrice} &#8364;</strong>
           </p>
         </Row>
         <Row className="justify-content-between">

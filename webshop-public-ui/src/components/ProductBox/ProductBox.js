@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CartControl from '../CartControl/CartControl';
 import classes from './ProductBox.module.css';
@@ -7,15 +7,23 @@ import classes from './ProductBox.module.css';
 export default class ProductBox extends Component {
   render() {
     return (
-      <Card className={`w-100 h-100 p-2 ${classes.Box}`}>
-        <Link to={`/products/${this.props.product.sku}`}>
-          <Card.Img
-            variant="bottom"
-            src={this.props.product.picture.url}
-            className="w-100 h-100"
-          />
-        </Link>
-        <Card.Body>
+      <Card className={`w-100 h-100 ${classes.Box}`}>
+        <Container
+          className={`d-flex flex-row justify-content-center align-items-center ${classes['Card-image-container']} p-3`}
+        >
+          <Link to={`/products/${this.props.product.sku}`}>
+            <Card.Img
+              variant="bottom"
+              src={
+                this.props.product
+                  ? this.props.product.picture.url
+                  : '/assets/images/no-image-found.png'
+              }
+              className={classes['Card-image']}
+            />
+          </Link>
+        </Container>
+        <Card.Body className="p-3 h-25">
           <Card.Text className="d-flex flex-row justify-content-between">
             <Link
               to={`/products/${this.props.product.sku}`}
@@ -24,10 +32,12 @@ export default class ProductBox extends Component {
               {this.props.product.name}
             </Link>
             <span>{this.props.product.sku}</span>
-            <span>{this.props.product.price}</span>
+            <span>
+              <strong>{this.props.product.price} &#8364;</strong>{' '}
+            </span>
           </Card.Text>
         </Card.Body>
-        <Card.Footer className="d-flex flex-row">
+        <Card.Footer className="d-flex flex-row justify-content-between align-items-center">
           <CartControl product={this.props.product} />
         </Card.Footer>
       </Card>

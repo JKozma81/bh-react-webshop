@@ -19,7 +19,8 @@ class HeaderCart extends Component {
               {this.props.cart.reduce(
                 (total, item) => total + item.price * item.qty,
                 0
-              )}
+              )}{' '}
+              &#8364;
             </p>
           )}
           <Link to="/cart">
@@ -34,15 +35,17 @@ class HeaderCart extends Component {
           <ul>
             {this.props.cart.map((item, idx) => (
               <li key={`cartItem_${idx}`}>
-                {item.qty} x {item.name} = {item.qty * item.price}
+                {item.qty} x {item.name} = {item.qty * item.price} &#8364;
               </li>
             ))}
           </ul>
           <p className="text-right">
-            {`Total: ${this.props.cart.reduce(
+            Total:{' '}
+            {this.props.cart.reduce(
               (total, item) => total + item.price * item.qty,
               0
-            )}`}
+            )}{' '}
+            &#8364;
           </p>
         </div>
       </Container>

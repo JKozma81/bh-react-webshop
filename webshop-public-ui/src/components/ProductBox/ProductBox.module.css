@@ -9,3 +9,12 @@
 .Box {
   box-shadow: 5px 5px 25px black;
 }
+
+.Card-image-container {
+  height: 385px;
+}
+
+.Card-image {
+  /* max-width: 100%; */
+  max-height: 350px;
+}

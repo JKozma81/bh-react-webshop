@@ -4,6 +4,7 @@ import {
   REMOVE_ONE,
   EMPTY_CART,
   GET_ITEMS_FROM_SERVER,
+  UPDATE_STOCK,
 } from '../actions/Actions';
 
 export default function RootReducer(state = InitialState, action) {
@@ -155,6 +156,15 @@ export default function RootReducer(state = InitialState, action) {
         ...state,
         products: action.items.productsData,
         images: action.items.imageData,
+        promotions: action.items.promotions,
+        recommendations: action.items.recommendations,
+      };
+    }
+
+    case UPDATE_STOCK: {
+      return {
+        ...state,
+        products: action.items,
       };
     }
 

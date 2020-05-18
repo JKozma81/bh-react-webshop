@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Col, Button } from 'react-bootstrap';
 import { addToCart, removeOne } from '../../actions/Actions';
 import { connect } from 'react-redux';
+import classes from './CartItem.module.css';
 
 class CartItem extends Component {
   render() {
@@ -12,7 +13,10 @@ class CartItem extends Component {
     return (
       <>
         <Col xs={3}>
-          <img src={this.props.image} alt="product" />
+          <div
+            className={classes['cart-item-image']}
+            style={{ backgroundImage: `url(${this.props.image})` }}
+          ></div>
         </Col>
         <Col xs={3}>
           <strong>
@@ -34,7 +38,9 @@ class CartItem extends Component {
           )}
           =
         </Col>
-        <Col xs={3}>Items total price: {this.props.price * this.props.qty}</Col>
+        <Col xs={3}>
+          Items total price: {this.props.price * this.props.qty} &#8364;
+        </Col>
       </>
     );
   }

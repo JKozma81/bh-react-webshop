@@ -1,0 +1,10 @@
+.main-footer {
+  min-height: 50px;
+  color: blue;
+  background-image: linear-gradient(white, #5e8e3d);
+}
+
+.main-footer p {
+  margin: 0;
+  padding: 0;
+}

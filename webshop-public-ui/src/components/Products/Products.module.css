@@ -1,4 +1,7 @@
 .Products {
-  min-width: 1280px;
   min-height: 500px;
+}
+
+.Card {
+  min-height: 425px;
 }
