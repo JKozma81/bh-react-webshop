@@ -48,6 +48,15 @@
   margin-bottom: 15px;
 }
 
+.promo-link:hover {
+  color: #95bf45;
+}
+
+.promo-link:hover::after {
+  content: ' \21D2';
+  color: #95bf45;
+}
+
 .promo-btn {
   width: 25px;
   height: 25px;
