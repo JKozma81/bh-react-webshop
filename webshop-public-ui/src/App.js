@@ -12,6 +12,7 @@ import CartPage from './components/CartPage/CartPage';
 import CheckoutPage from './components/CheckoutPage/CheckoutPage';
 import { getItemsFromServer } from './actions/Actions';
 import PromoCarousel from './components/PromoCarousel/PromoCarousel';
+import Custom404 from './components/Custom404/Custom404';
 
 class App extends Component {
   state = {
@@ -53,12 +54,27 @@ class App extends Component {
               </Route>
               <Route
                 path="/products/:id"
-                component={(routProps) => (
-                  <ProductDetail productId={routProps.match.params.id} />
-                )}
+                component={(routProps) => {
+                  const sku = routProps.match.params.id;
+                  const productExists = this.props.products.find(
+                    (product) => product.sku === sku
+                  );
+
+                  if (productExists) {
+                    return (
+                      <ProductDetail productId={routProps.match.params.id} />
+                    );
+                  } else {
+                    return <Custom404 />;
+                  }
+                }}
               ></Route>
+
               <Route path="/checkout">
                 <CheckoutPage />
+              </Route>
+              <Route>
+                <Custom404 />
               </Route>
             </Switch>
           </Row>
