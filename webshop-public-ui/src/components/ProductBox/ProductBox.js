@@ -15,7 +15,7 @@ export default class ProductBox extends Component {
             <Card.Img
               variant="bottom"
               src={
-                this.props.product
+                this.props.product.picture.url
                   ? this.props.product.picture.url
                   : '/assets/images/no-image-found.png'
               }
