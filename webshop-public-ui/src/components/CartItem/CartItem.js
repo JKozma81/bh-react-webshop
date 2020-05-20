@@ -31,10 +31,17 @@ class CartItem extends Component {
             -
           </Button>
           {this.props.qty}
-          {this.props.qty <= productInStock.qty + 1 && (
+          {/* {this.props.qty <= productInStock.qty + 1 && (
             <Button onClick={() => this.props.addToCart(this.props.sku)}>
               +
             </Button>
+          )} */}
+          {this.props.qty <= productInStock.qty + 1 ? (
+            <Button onClick={() => this.props.addToCart(this.props.sku)}>
+              +
+            </Button>
+          ) : (
+            <span> </span>
           )}
           =
         </Col>

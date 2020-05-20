@@ -1,5 +1,5 @@
 .recommended-container {
-  height: 575px;
+  height: 700px;
 }
 
 .big-arrow {
@@ -10,7 +10,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #5e8e3d;
+  color: #1d3354;
   position: absolute;
   background-color: rgba(255, 255, 255, 0.7);
 }
@@ -56,5 +56,5 @@
 
 .big-arrow span:hover {
   cursor: pointer;
-  color: #95bf45;
+  color: #9ed8db;
 }

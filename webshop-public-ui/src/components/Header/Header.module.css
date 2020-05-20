@@ -3,9 +3,17 @@
 #95bf45 -light
 */
 
-.Main-header {
+.main-header {
   min-height: 120px;
-  color: #95bf45;
-  background-image: linear-gradient(rgb(0, 132, 255), white);
-  box-shadow: 0 5px 20px black;
+  /* color: #95bf45; */
+  color: #1d3354;
+  background-image: linear-gradient(#0275d8, white);
+  box-shadow: 0 5px 20px #1d3354;
+}
+
+.main-header h1 {
+  -webkit-text-stroke: 1px #1d3354;
+  color: #9ed8db;
+  text-shadow: -1px -1px 0 #1d3354, 1px -1px 0 #1d3354, -1px 1px 0 #1d3354,
+    1px 1px 0 #1d3354;
 }

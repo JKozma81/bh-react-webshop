@@ -7,7 +7,8 @@
 }
 
 .Box {
-  box-shadow: 5px 5px 25px black;
+  box-shadow: 5px 5px 25px #1d3354;
+  color: #1d3354;
 }
 
 .Card-image-container {

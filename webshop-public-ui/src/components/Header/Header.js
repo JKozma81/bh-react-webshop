@@ -9,7 +9,7 @@ export default class Header extends Component {
     return (
       <Container
         fluid
-        className={`d-flex flex-row justify-content-between align-items-center ${classes['Main-header']}`}
+        className={`d-flex flex-row justify-content-between align-items-center ${classes['main-header']}`}
       >
         <Logo />
         <h1>BH React Webshop</h1>

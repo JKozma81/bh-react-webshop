@@ -22,7 +22,7 @@ class PromoCarousel extends Component {
   increaseCounter = () => {
     let counter = this.state.active;
     if (counter >= this.promoRefs.length - 1) return;
-    this.slide.current.style.transition = 'transform 0.2s linear';
+    this.slide.current.style.transition = 'transform 0.3s linear';
     counter++;
     this.setState((prevState) => ({ ...prevState, active: counter }));
     this.slide.current.style.transform =

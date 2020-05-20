@@ -2,7 +2,7 @@
   width: 1280px;
   height: 800px;
   padding: 30px;
-  color: #5e8e3d;
+  color: #1d3354;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -43,18 +43,18 @@
 .promo-link {
   font-size: 25px;
   font-weight: bold;
-  color: #5e8e3d;
+  color: #1d3354;
   align-self: flex-end;
   margin-bottom: 15px;
 }
 
 .promo-link:hover {
-  color: #95bf45;
+  color: #9ed8db;
 }
 
 .promo-link:hover::after {
   content: ' \21D2';
-  color: #95bf45;
+  color: #9ed8db;
 }
 
 .promo-btn {
@@ -71,6 +71,6 @@
 }
 
 .promo-btn-active {
-  border: 1px solid black;
-  background-color: #5e8e3d;
+  border: 1px solid #1d3354;
+  background-color: #9ed8db;
 }

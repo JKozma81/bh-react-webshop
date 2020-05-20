@@ -18,6 +18,7 @@ class ProductInfo extends Component {
               In stock: {this.props.qty ? this.props.qty : 'Out of stock!'}
             </strong>
           </p>
+          <br />
           <p>{this.props.desc}</p>
         </Row>
         <Row className="justify-content-end" style={{ minHeight: '40px' }}>
