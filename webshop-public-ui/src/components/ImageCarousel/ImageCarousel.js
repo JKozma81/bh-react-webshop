@@ -7,10 +7,11 @@ class ImageCarousel extends Component {
   state = {
     active: this.props.images.length + 1,
     size: 100,
-    defaultImg: this.props.defaultImg,
+    // defaultImg: this.props.defaultImg,
   };
 
   imageRefs = [];
+  displayRef = React.createRef();
   slide = React.createRef();
 
   handleNextClick = () => {
@@ -59,8 +60,8 @@ class ImageCarousel extends Component {
 
   handleSelectPic = (evt) => {
     const selectedPic = evt.target.style.backgroundImage;
-    const url = selectedPic.split('"')[1];
-    this.setState((prevState) => ({ ...prevState, defaultImg: url }));
+    this.displayRef.current.style.backgroundImage =
+      evt.target.style.backgroundImage;
   };
 
   render() {
@@ -84,7 +85,8 @@ class ImageCarousel extends Component {
         <Row className="justify-content-center align-items-center">
           <Container
             className={classes['picture-display']}
-            style={{ backgroundImage: `url(${this.state.defaultImg})` }}
+            style={{ backgroundImage: `url(${this.props.defaultImg})` }}
+            ref={this.displayRef}
           ></Container>
         </Row>
         <Row className="justify-content-center align-items-center mt-2 mb-2">
