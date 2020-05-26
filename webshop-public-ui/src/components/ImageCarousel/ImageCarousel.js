@@ -59,7 +59,6 @@ class ImageCarousel extends Component {
   };
 
   handleSelectPic = (evt) => {
-    const selectedPic = evt.target.style.backgroundImage;
     this.displayRef.current.style.backgroundImage =
       evt.target.style.backgroundImage;
   };
